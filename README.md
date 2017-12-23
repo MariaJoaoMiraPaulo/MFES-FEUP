@@ -2,6 +2,25 @@
 
 ## 8- Small Business Discount Network
 
-In this project you should model all the information and transactions managed by a small business discount network. Small merchants can join the system. Consumers / customers can join the system by receiving a discount card (physical or virtual) that they use in purchases from affiliated merchants. In each purchase, there is a charge that is charged to the merchant (for example, 5% of the value of the sale), a part of which is returned to the customer (for example, 3%) and the remainder is a service charge to pay the maintenance of the system (e.g., 2%). The customer may use his balance on subsequent purchases from any affiliated merchant. You can also transfer part of your balance to other adherent customers. Customers who get new customers or merchants who raise new merchants also receive bonuses. Merchants can offer extra discounts on selected products (increasing the % that reverts to the customer).
+In this project you should model all the information and transactions managed by a small business discount network.
+Small merchants can join the system. Consumers / customers can join the system by receiving a discount card (physical or virtual)
+that they use in purchases from affiliated merchants. In each purchase, there is a charge that is charged to the merchant
+(for example, 5% of the value of the sale), a part of which is returned to the customer (for example, 3%) and the remainder
+is a service charge to pay the maintenance of the system (e.g., 2%). The customer may use his balance on subsequent purchases
+from any affiliated merchant. You can also transfer part of your balance to other adherent customers. Customers who get new
+customers or merchants who raise new merchants also receive bonuses. Merchants can offer extra discounts on selected products
+(increasing the % that reverts to the customer).
 
 See: http-//www.boobonus.com/
+
+### List of Requirements
+
+[ ] R1 - Mandatory - Small Merchants can join the system.
+[ ] R2 - Mandatory - Consumers / customers can join the system by receiving a discount card (physical or virtual).
+[ ] R3 - Mandatory - Consumer purchase something from the affiliated merchant.
+[ ] R4 - Mandatory - Each purchase charges 5%, from the value of sale, 3% is returned to the costumer and 2% is a fee for operating costs.
+[ ] R5 - Mandatory - The customer may use his balance on subsequent purchases from any affiliated merchant.
+[ ] R6 - Mandatory - The consumer can transfer part of his balance to other adherent customer.
+[ ] R7 - Mandatory - A Customer who get new customers receives a bonus.
+[ ] R8 - Mandatory - A merchant who raise new merchants receives a bonus.
+[ ] R9 - Mandatory - Merchants can offer extra discounts on selected products (increasing the % that reverts to the customer).
