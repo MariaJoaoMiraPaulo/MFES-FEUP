@@ -18,9 +18,11 @@ See: http-//www.boobonus.com/
 - [ ] R1 - Mandatory - Small Merchants can join the system.
 - [ ] R2 - Mandatory - Consumers / customers can join the system by receiving a discount card (physical or virtual).
 - [ ] R3 - Mandatory - Consumer purchase something from the affiliated merchant.
-- [ ] R4 - Mandatory - Each purchase charges 5%, from the value of sale, 3% is returned to the costumer and 2% is a fee for operating costs.
+- [ ] R4 - Mandatory - Each purchase charges a fee, from the value of sale. This includes the discount, that is returned to the customer and a default fee which is used for operating costs.
 - [ ] R5 - Mandatory - The customer may use his balance on subsequent purchases from any affiliated merchant.
 - [ ] R6 - Mandatory - The consumer can transfer part of his balance to other adherent customer.
 - [ ] R7 - Mandatory - A Customer who get new customers receives a bonus.
 - [ ] R8 - Mandatory - A merchant who raise new merchants receives a bonus.
 - [ ] R9 - Mandatory - Merchants can offer extra discounts on selected products (increasing the % that reverts to the customer).
+- [ ] R10 - Optional - A merchant can add new products
+- [ ] R10 - Optional - A merchant can remove a product
