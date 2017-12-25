@@ -6,8 +6,20 @@ values
 instance variables
 	public users: set of User := {};
 	public merchants: set of Merchant := {};
+	
+	
 operations
--- TODO Define operations here
+
+	public costumerJoins : User ==> ()
+	costumerJoins(user) == users := users union {user}
+	pre user not in set users
+	post users = users~ union {user};
+	
+	public merchantJoins : Merchant ==> ()
+	merchantJoins(merchant) == merchants := merchants union {merchant}
+	pre merchant not in set merchants
+	post merchants = merchants~ union {merchant};
+ 
 functions
 -- TODO Define functiones here
 traces
