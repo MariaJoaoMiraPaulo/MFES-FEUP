@@ -6,6 +6,7 @@ values
 instance variables
 	public name : String;
 	public cost : real;
+	public quantity: nat;
 	public extraDiscount : real;
 operations
 -- TODO Define operations here
