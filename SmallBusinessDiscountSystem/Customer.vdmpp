@@ -4,7 +4,7 @@ types
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+ 	private discountCard: DiscountCard;
 operations
 -- TODO Define operations here
 functions
