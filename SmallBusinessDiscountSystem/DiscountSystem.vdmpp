@@ -32,9 +32,10 @@ operations
 	public inviteCustomer(user, invitee: Customer) == (customerJoins(invitee); user.receiveBonus())
 	pre user in set customers and invitee not in set customers
 	post user in set customers and invitee in set customers;
-
 	
-			
+	public inviteMerchant(merchant, invitee: Merchant) == (merchantJoins(invitee); merchant.receiveBonus())
+	pre merchant in set merchants and invitee not in set merchants
+	post merchant in set merchants and invitee in set merchants;
 	
 functions
 -- TODO Define functiones here

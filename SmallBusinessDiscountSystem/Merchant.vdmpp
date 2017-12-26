@@ -14,7 +14,9 @@ Merchant(merchantName) == User(merchantName
 );
 
 public GetProducts() res: set of Product == return products;
- 
+
+public receiveBonus() == ( balance:= balance + 5)
+post balance = balance~ + 5;
 
 public getProductsByName(productName: String) products: set of Product ==
 return {product | product in set products & product.name = productName};
