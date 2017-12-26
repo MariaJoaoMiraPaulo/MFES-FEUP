@@ -7,6 +7,9 @@ instance variables
  	private discountCard: DiscountCard;
 operations
 -- TODO Define operations here
+public Customer : String ==> Customer
+Customer(String) == User(String)
+
 functions
 -- TODO Define functiones here
 traces

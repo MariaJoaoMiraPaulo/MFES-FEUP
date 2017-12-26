@@ -6,11 +6,24 @@ values
 -- TODO Define values here
 instance variables
 	private name : String;
+	public static userId : int := 0;
+	public id : int := userId;
 
 operations
 -- TODO Define operations here
+public User: String ==> User
+User(user_name) == (
+				name := user_name;
+				id := userId;
+				userId := userId + 1;
+				return self
+);
+
+public GetName() res: String == return name;
+
 functions
 -- TODO Define functiones here
+
 traces
 -- TODO Define Combinatorial Test Traces here
 end User

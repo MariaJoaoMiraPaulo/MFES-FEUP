@@ -4,9 +4,16 @@ types
 values
 -- TODO Define values here
 instance variables
-	public products : set of Product;
+	public products : set of Product := {};
+	
 operations
 -- TODO Define operations here
+public Merchant : String ==> Merchant
+Merchant(merchant_name) == User(merchant_name
+);
+
+public GetProducts() res: set of Product == return products;
+
 functions
 -- TODO Define functiones here
 traces

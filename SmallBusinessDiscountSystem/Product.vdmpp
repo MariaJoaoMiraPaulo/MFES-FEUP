@@ -10,6 +10,16 @@ instance variables
 	public extraDiscount : real;
 operations
 -- TODO Define operations here
+public Product : String * real * nat * real ==> Product
+Product(product_name, product_cost, product_quantity, product_discount) ==
+(
+	name := product_name;
+	cost := product_cost;
+	quantity := product_quantity;
+	extraDiscount := product_discount;
+	return self;
+);
+
 functions
 -- TODO Define functiones here
 traces
