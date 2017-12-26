@@ -13,7 +13,7 @@ operations
 	DiscountSystem() == return self;
 
 	public customerJoins : User ==> ()
-	custumerJoins(user) == users := users union {user}
+	customerJoins(user) == users := users union {user}
 	pre user not in set users
 	post users = users~ union {user};
 	
