@@ -7,8 +7,9 @@ instance variables
  	private discountCard: DiscountCard;
 operations
 -- TODO Define operations here
+-- TODO Define operations here
 public Customer : String ==> Customer
-Customer(String) == (User(String); discountCard := new DiscountCard(0.10););
+Customer(String) == ( discountCard := new DiscountCard(0.10); User(String););
 
 public GetCard() res: DiscountCard == return discountCard;
 
