@@ -22,7 +22,7 @@ operations
 	pre merchant not in set merchants
 	post merchants = merchants~ union {merchant};
 				
-	public transfer(sender, sender', receiver, receiver': Customer, value: real) == (sender.withdraw(value);receiver.deposit(value);)
+	public transfer(sender, receiver: Customer, value: real) == (sender.withdraw(value);receiver.deposit(value);)
 	pre sender in set users and receiver in set users and value >=0
 	post sender in set users and receiver in set users
 
