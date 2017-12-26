@@ -20,6 +20,13 @@ Product(product_name, product_cost, product_quantity, product_discount) ==
 	return self;
 );
 
+public GetName() res: String == return name;
+
+public GetPrice() res: real == return cost;
+
+public setDiscount(discount: real) ==
+	extraDiscount := discount;
+
 functions
 -- TODO Define functiones here
 traces
