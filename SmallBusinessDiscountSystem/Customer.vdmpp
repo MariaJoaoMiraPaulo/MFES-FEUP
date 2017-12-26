@@ -21,6 +21,9 @@ public withdraw(value: real) ==
 	discountCard.withdraw(value)
 pre value >= 0;
 
+public receiveBonus() == 
+	discountCard.deposit(5);
+
 public GetBalance() res: real == return discountCard.GetBalance();
 
 functions

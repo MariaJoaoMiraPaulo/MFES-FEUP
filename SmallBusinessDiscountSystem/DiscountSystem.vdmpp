@@ -24,7 +24,11 @@ operations
 				
 	public transfer(sender, receiver: Customer, value: real) == (sender.withdraw(value);receiver.deposit(value);)
 	pre sender in set customers and receiver in set customers and value >=0
-	post sender in set customers and receiver in set customers
+	post sender in set customers and receiver in set customers;
+	
+	public inviteCustomer(user, invitee: Customer) == (customerJoins(invitee); user.receiveBonus())
+	pre user in set customers and invitee not in set customers
+	post user in set customers and invitee in set customers;
 
 functions
 -- TODO Define functiones here
