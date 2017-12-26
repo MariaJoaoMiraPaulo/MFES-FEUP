@@ -41,11 +41,6 @@ public sellProduct(productName: String, customerDiscount: real, amount: nat) dis
 		product.decreaseQuantity(amount);
 		return product.getPrice() - (product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100);
 	);
-		
-
-	
-		
-	
 	
 functions
 -- TODO Define functiones here
