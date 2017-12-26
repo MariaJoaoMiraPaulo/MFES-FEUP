@@ -4,7 +4,7 @@ types
 values
 -- TODO Define values here
 instance variables
-	public users: set of User := {};
+	public customers: set of Customer := {};
 	public merchants: set of Merchant := {};
 	
 operations
@@ -12,10 +12,10 @@ operations
 	public DiscountSystem: () ==> DiscountSystem
 	DiscountSystem() == return self;
 
-	public customerJoins : User ==> ()
-	customerJoins(user) == users := users union {user}
-	pre user not in set users
-	post users = users~ union {user};
+	public customerJoins : Customer ==> ()
+	customerJoins(customer) == customers := customers union {customer}
+	pre customer not in set customers
+	post customers = customers~ union {customer};
 	
 	public merchantJoins : Merchant ==> ()
 	merchantJoins(merchant) == merchants := merchants union {merchant}
@@ -26,11 +26,16 @@ operations
 		customer.increaseBalance(merchant.sellProduct(product, customer.getDiscount(), amount));
 	
 	public transfer(sender, receiver: Customer, value: real) == (sender.withdraw(value);receiver.deposit(value);)
-	pre sender in set users and receiver in set users and value >=0
-	post sender in set users and receiver in set users;
-
+	pre sender in set customers and receiver in set customers and value >=0
+	post sender in set customers and receiver in set customers;
 	
-			
+	public inviteCustomer(user, invitee: Customer) == (customerJoins(invitee); user.receiveBonus())
+	pre user in set customers and invitee not in set customers
+	post user in set customers and invitee in set customers;
+	
+	public inviteMerchant(merchant, invitee: Merchant) == (merchantJoins(invitee); merchant.receiveBonus())
+	pre merchant in set merchants and invitee not in set merchants
+	post merchant in set merchants and invitee in set merchants;
 	
 functions
 -- TODO Define functiones here

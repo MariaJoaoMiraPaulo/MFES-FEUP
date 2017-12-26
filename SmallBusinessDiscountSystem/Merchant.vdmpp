@@ -14,7 +14,9 @@ Merchant(merchantName) == User(merchantName
 );
 
 public GetProducts() res: set of Product == return products;
- 
+
+public receiveBonus() == ( balance:= balance + 5)
+post balance = balance~ + 5;
 
 public getProductsByName(productName: String) products: set of Product ==
 return {product | product in set products & product.name = productName};
@@ -28,13 +30,18 @@ public addProduct(product: Product) ==
 	pre product not in set products
 	post products = products~ union {product};
 	
+public removeProduct(product: Product) ==
+	products := products  \ {product}
+	pre product in set products
+	post products~ = products union {product} and product not in set products;
+	
 public sellProduct(productName: String, customerDiscount: real, amount: nat) discount: real == 
 	for all product in set getProductsByName(productName) do (
 		balance := ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100) * (SystemFee/100)) * amount;
 		product.decreaseQuantity(amount);
 		return (product.getPrice() - (product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100)) * amount;
 	);
-		
+	
 functions
 -- TODO Define functiones here
 traces
