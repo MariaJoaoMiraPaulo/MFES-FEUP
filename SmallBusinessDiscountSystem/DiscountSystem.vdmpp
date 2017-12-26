@@ -12,8 +12,8 @@ operations
 	public DiscountSystem: () ==> DiscountSystem
 	DiscountSystem() == return self;
 
-	public costumerJoins : User ==> ()
-	costumerJoins(user) == users := users union {user}
+	public customerJoins : User ==> ()
+	custumerJoins(user) == users := users union {user}
 	pre user not in set users
 	post users = users~ union {user};
 	

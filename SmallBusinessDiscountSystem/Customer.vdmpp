@@ -2,9 +2,9 @@ class Customer is subclass of User
 types
 -- TODO Define types here
 values
--- TODO Define values here
+	public defaultDiscount: real = 3;
 instance variables
- 	private discountCard: DiscountCard := new DiscountCard(0.10);
+ 	private discountCard: DiscountCard := new DiscountCard(defaultDiscount);
 operations
 -- TODO Define operations here
 public Customer : String ==> Customer

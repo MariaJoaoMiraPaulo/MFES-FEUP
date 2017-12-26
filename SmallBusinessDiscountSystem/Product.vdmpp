@@ -29,7 +29,7 @@ public getDiscount() res: real == return extraDiscount;
 public decreaseQuantity(amount: nat) ==
 	quantity := quantity - amount
 	pre quantity > 0
-	post quantity~ = quantity - amount;
+	post quantity~ = quantity + amount;
 
 public setDiscount(discount: real) ==
 	extraDiscount := discount
