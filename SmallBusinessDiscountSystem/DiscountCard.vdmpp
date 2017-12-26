@@ -18,10 +18,12 @@ DiscountCard(cardDiscount) == (
 public GetBalance() res: real == return balance;
 
 public withdraw(value: real) ==
-	balance := balance - value;
+	balance := balance - value
+	post balance = balance + value;
 	
 public deposit(value: real) ==
-	balance := balance + value;
+	balance := balance + value
+	post balance = balance - value;
 
 functions
 -- TODO Define functiones here
