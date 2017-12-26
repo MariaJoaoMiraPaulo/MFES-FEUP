@@ -9,10 +9,11 @@ instance variables
 operations
 -- TODO Define operations here
 public Merchant : String ==> Merchant
-Merchant(merchant_name) == User(merchant_name
+Merchant(merchantName) == User(merchantName
 );
 
 public GetProducts() res: set of Product == return products;
+ 
 
 public getProductsByName(productName: String) products: set of Product ==
 return {product | product in set products & product.name = productName};

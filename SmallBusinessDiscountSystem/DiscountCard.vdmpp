@@ -6,15 +6,22 @@ values
 instance variables
 	private discount: real;
 	private balance: real := 0;
+	inv balance >= 0;
 operations
 -- TODO Define operations here
 public DiscountCard: real ==> DiscountCard
-DiscountCard(card_discount) == (
-	discount := card_discount;
+DiscountCard(cardDiscount) == (
+	discount := cardDiscount;
 	return self;
 );
 
 public GetBalance() res: real == return balance;
+
+public withdraw(value: real) ==
+	balance := balance - value;
+	
+public deposit(value: real) ==
+	balance := balance + value;
 
 functions
 -- TODO Define functiones here
