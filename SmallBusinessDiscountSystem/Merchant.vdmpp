@@ -30,7 +30,7 @@ public addProduct(product: Product) ==
 	
 public sellProduct(productName: String, customerDiscount: real, amount: nat) discount: real == 
 	for all product in set getProductsByName(productName) do (
-		balance := ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100) * SystemFee) * amount;
+		balance := ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100) * (SystemFee/100)) * amount;
 		product.decreaseQuantity(amount);
 		return (product.getPrice() - (product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100)) * amount;
 	);
