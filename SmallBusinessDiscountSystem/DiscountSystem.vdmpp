@@ -7,7 +7,6 @@ instance variables
 	public users: set of User := {};
 	public merchants: set of Merchant := {};
 	
-	
 operations
 
 	public costumerJoins : User ==> ()
@@ -19,9 +18,12 @@ operations
 	merchantJoins(merchant) == merchants := merchants union {merchant}
 	pre merchant not in set merchants
 	post merchants = merchants~ union {merchant};
+	
+	
  
 functions
 -- TODO Define functiones here
+
 traces
 -- TODO Define Combinatorial Test Traces here
 end DiscountSystem

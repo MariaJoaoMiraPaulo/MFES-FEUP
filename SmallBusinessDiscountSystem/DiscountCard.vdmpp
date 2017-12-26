@@ -5,9 +5,17 @@ values
 -- TODO Define values here
 instance variables
 	private discount: real;
-	private balance: real;
+	private balance: real := 0;
 operations
 -- TODO Define operations here
+public DiscountCard: real ==> DiscountCard
+DiscountCard(card_discount) == (
+	discount := card_discount;
+	return self;
+);
+
+public GetBalance() res: real == return balance;
+
 functions
 -- TODO Define functiones here
 traces
