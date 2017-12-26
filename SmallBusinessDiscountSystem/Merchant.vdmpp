@@ -28,7 +28,7 @@ public addProduct(product: Product) ==
 	pre product not in set products
 	post products = products~ union {product};
 	
-public sellProduct(productName: String, customerDiscount: real, amount: nat) discount: real == 
+public sellProduct(productName: String, customerDiscount: nat, amount: nat) discount: real == 
 	for all product in set getProductsByName(productName) do (
 		balance := ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100) * SystemFee);
 		product.decreaseQuantity(amount);
