@@ -20,12 +20,20 @@ Product(product_name, product_cost, product_quantity, product_discount) ==
 	return self;
 );
 
-public GetName() res: String == return name;
+public getName() res: String == return name;
 
-public GetPrice() res: real == return cost;
+public getPrice() res: real == return cost;
+
+public getDiscount() res: real == return extraDiscount;
+
+public decreaseQuantity(amount: nat) ==
+	quantity := quantity - amount
+	pre quantity > 0
+	post quantity~ = quantity + amount;
 
 public setDiscount(discount: real) ==
-	extraDiscount := discount;
+	extraDiscount := discount
+	post extraDiscount = discount;
 
 functions
 -- TODO Define functiones here
