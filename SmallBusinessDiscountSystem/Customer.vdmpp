@@ -26,6 +26,11 @@ public receiveBonus() ==
 
 public GetBalance() res: real == return discountCard.GetBalance();
 
+public getDiscount() res: real == return discountCard.getDiscount();
+
+public increaseBalance(amount: real) == 
+	discountCard.increaseBalance(amount)
+
 functions
 -- TODO Define functiones here
 traces

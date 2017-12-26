@@ -1,6 +1,6 @@
 class DiscountSystem
 types
--- TODO Define types here
+	public String = seq of char;
 values
 -- TODO Define values here
 instance variables
@@ -22,6 +22,9 @@ operations
 	pre merchant not in set merchants
 	post merchants = merchants~ union {merchant};
 				
+	public buyProduct(merchant: Merchant, customer: Customer, product: String, amount: nat) == 
+		customer.increaseBalance(merchant.sellProduct(product, customer.getDiscount(), amount));
+	
 	public transfer(sender, receiver: Customer, value: real) == (sender.withdraw(value);receiver.deposit(value);)
 	pre sender in set customers and receiver in set customers and value >=0
 	post sender in set customers and receiver in set customers;
@@ -30,6 +33,9 @@ operations
 	pre user in set customers and invitee not in set customers
 	post user in set customers and invitee in set customers;
 
+	
+			
+	
 functions
 -- TODO Define functiones here
 
