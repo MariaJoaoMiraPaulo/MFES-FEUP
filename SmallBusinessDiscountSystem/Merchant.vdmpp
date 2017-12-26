@@ -30,6 +30,11 @@ public addProduct(product: Product) ==
 	pre product not in set products
 	post products = products~ union {product};
 	
+public removeProduct(product: Product) ==
+	products := products  \ {product}
+	pre product in set products
+	post products~ = products union {product} and product not in set products;
+	
 public sellProduct(productName: String, customerDiscount: real, amount: nat) discount: real == 
 	for all product in set getProductsByName(productName) do (
 		balance := ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100) * SystemFee);
