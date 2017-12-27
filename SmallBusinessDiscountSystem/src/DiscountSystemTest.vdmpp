@@ -74,6 +74,16 @@ testAddProduct() ==
 	Assert(product.getDiscount() = 5)
 );
 
+private testRemoveProduct: () ==> ()
+testRemoveProduct() == 
+(
+	if product not in set merchant1.products then
+		merchant1.addProduct(product);
+		
+	merchant1.removeProduct(product);
+	Assert( product not in set merchant1.products);
+);
+
 private testSearchProductByName: () ==> ()
 testSearchProductByName() ==
 (
@@ -82,6 +92,77 @@ testSearchProductByName() ==
 	AssertEqual({}, merchant.getProductsByName(product.getName()));
 	merchant.addProduct(product);
 	Assert(product in set merchant.getProductsByName(product.getName()))
+);
+
+private testTransferBetweenCustomers: () ==> ()
+testTransferBetweenCustomers() ==
+(
+	dcl system: DiscountSystem := new DiscountSystem();	
+	system.customerJoins(customer1);
+	system.customerJoins(customer2);
+	
+	--sender
+	AssertEqual(0,customer1.GetBalance());
+	customer1.deposit(10);
+	AssertEqual(10,customer1.GetBalance());
+	
+	--receiver
+	AssertEqual(0, customer2.GetBalance());
+	
+	--transfer 10 from customer1 to customer2
+	system.transfer(customer1, customer2, 10);
+	AssertEqual(0, customer1.GetBalance());
+	AssertEqual(10, customer2.GetBalance());
+);
+
+public testInviteCustomer: () ==> ()
+testInviteCustomer() ==
+(
+ dcl invitee: Customer := new Customer("Invitee User");
+ dcl balance: real := customer1.GetBalance();
+ dcl system: DiscountSystem := new DiscountSystem();	
+ 
+ -- Customer 1 is part of the system
+ system.customerJoins(customer1);
+ Assert(customer1 in set system.customers);
+ 
+ -- Invitee is new on the system
+ 	Assert(invitee not in set system.customers);
+ 
+ -- Customer1 invites invitee
+  system.inviteCustomer(customer1, invitee); 
+ 
+ -- Invitee becames a member of the system
+  Assert(invitee in set system.customers);
+ 
+  -- Customer Receives a bonus
+  AssertEqual(balance + 5,customer1.GetBalance());
+  
+);
+
+public testInviteMerchant: () ==> ()
+testInviteMerchant() ==
+(
+ dcl system: DiscountSystem := new DiscountSystem();	
+ dcl invitee: Merchant := new Merchant("Invitee Merchant");
+ dcl balance: real := merchant1.GetBalance();
+ 
+  -- Merchant1 is part of the system
+ system.merchantJoins(merchant1);
+ Assert(merchant1 in set system.merchants);
+ 
+  -- Invitee is new on the system
+ 	Assert(invitee not in set system.merchants);
+ 	
+	-- Merchant1 invites invitee
+  system.inviteMerchant(merchant1, invitee); 
+  
+  -- Invitee becames a member of the system
+  Assert(invitee in set system.merchants);
+  
+  -- Merchant1 Receives a bonus
+  AssertEqual(balance + 5,merchant1.GetBalance());
+ 
 );
 
 public static main: () ==> ()
@@ -109,8 +190,24 @@ main()==
 	systemTest.testAddProduct();
 	IO`println("Success");
 	
+	IO`print("Remove Product: ");
+	systemTest.testRemoveProduct();
+	IO`println("Success");
+	
 	IO`print("Search Product By Name: ");
 	systemTest.testSearchProductByName();
+	IO`println("Success");
+	
+	IO`print("Transfer to Customer: ");
+	systemTest.testTransferBetweenCustomers();
+	IO`println("Success");
+	
+	IO`print("Customer invites Customer and receives a bonus: ");
+	systemTest.testInviteCustomer();
+	IO`println("Success");
+	
+	IO`print("Merchant invites Merchant and receives a bonus: ");
+	systemTest.testInviteMerchant();
 	IO`println("Success");
 )
 
@@ -124,7 +221,11 @@ CreateMerchant: testCreateMerchant();
 CustomerJoins: testCustomerJoins();
 MerchantJoins: testMerchantJoins();
 AddProduct: testAddProduct();
+RemoveProduct: testRemoveProduct();
 SearchProductByName: testSearchProductByName();
+TransferBetweenCustomers: testTransferBetweenCustomers();
+InviteCustomerReceiveBonus: testInviteCustomer();
+InviteMerchantReceiveBonus: testInviteMerchant();
 
 
 end DiscountSystemTest
