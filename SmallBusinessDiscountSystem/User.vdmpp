@@ -3,14 +3,15 @@ types
 	public String = seq of char;
 	
 values
--- TODO Define values here
+
 instance variables
 	private name : String;
 	public static userId : int := 0;
 	public id : int := userId;
 
 operations
--- TODO Define operations here
+
+-- User Constructor 
 public User: String ==> User
 User(userName) == (
 				name := userName;
@@ -19,12 +20,10 @@ User(userName) == (
 				return self
 );
 
+-- Returns user name
 public GetName() res: String == return name;
 
-
 functions
--- TODO Define functiones here
-
 traces
--- TODO Define Combinatorial Test Traces here
+
 end User
