@@ -26,7 +26,6 @@ operations
 		customer.increaseBalance(merchant.sellProduct(product, customer, amount))
 	pre product.getQuantity() >= amount;
 	
-	
 	public buyProductUsingBalance(merchant: Merchant, customer: Customer, product: Product, amount: nat) == 
 	(
 			customer.decreaseBalance(product.getPrice());
@@ -34,7 +33,6 @@ operations
 	)
 	pre product.getQuantity() >= amount;
 
-	
 	public transfer(sender, receiver: Customer, value: real) == (sender.withdraw(value);receiver.deposit(value);)
 	pre sender in set customers and receiver in set customers and value >=0
 	post sender in set customers and receiver in set customers;
