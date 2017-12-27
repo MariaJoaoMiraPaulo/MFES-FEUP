@@ -2,7 +2,7 @@ class Customer is subclass of User
 types
 
 values
-	public defaultDiscount: real = 3;
+	public defaultDiscount: real = 5;
 	public defaultBonus: real = 5;
 	
 instance variables

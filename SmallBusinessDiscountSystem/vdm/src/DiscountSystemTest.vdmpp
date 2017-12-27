@@ -84,6 +84,16 @@ testRemoveProduct() ==
 	Assert( product not in set merchant1.products);
 );
 
+private testSetProductDiscount: () ==> ()
+testSetProductDiscount() == 
+(
+	Assert(product.getDiscount() = 5);
+	merchant1.addProduct(product);
+	merchant1.setDiscount(product.getName(), 10);
+	Assert(product.getDiscount() = 10);
+);
+
+
 private testSearchProductByName: () ==> ()
 testSearchProductByName() ==
 (
@@ -197,6 +207,45 @@ testBuyProductWithoutBalance() ==
 
 );
 
+public testBuyProductUsingBalance: () ==> ()
+testBuyProductUsingBalance() == 
+(
+	dcl system: DiscountSystem := new DiscountSystem();	
+	dcl customerBalance: real := customer1.GetBalance();
+	dcl merchantBalance: real := merchant1.GetBalance();
+	dcl perfume : Product := new Product("perfume", 100, 20, 50);
+	dcl quantity: nat := perfume.getQuantity();
+	dcl amount: nat := 1;
+	dcl merchantReturn : real := ((perfume.getPrice() * (1-perfume.getDiscount()/100)) * (1-customer1.getDiscount()/100) * (merchant1.SystemFee/100)) * amount;
+	dcl customerReturn : real := (perfume.getPrice() - (perfume.getPrice() * (1-perfume.getDiscount()/100)) * (1-customer1.getDiscount()/100)) * amount;
+	
+	-- Prepare System
+	system.merchantJoins(merchant1);
+	system.customerJoins(customer1);
+	
+	-- Adding product
+	merchant1.addProduct(perfume);
+	
+	--Customer buys a product
+	system.buyProduct(merchant1, customer1, perfume, amount);
+	
+	-- Merchant sells product
+	AssertEqual(quantity-1, perfume.getQuantity());
+
+	-- Merchant balance increases
+	AssertEqual(merchantBalance + merchantReturn, merchant1.GetBalance());
+	
+	-- Customer balance increases
+	AssertEqual(customerBalance + customerReturn, customer1.GetBalance());
+	
+	AssertEqual(customer1.GetBalance(), 47.5);
+	
+	system.buyProductUsingBalance(merchant1, customer1, perfume, amount);
+	
+	AssertEqual(customer1.GetBalance(), 0);
+
+);
+
 public static main: () ==> ()
 main()==
 (
@@ -224,6 +273,10 @@ main()==
 	
 	IO`print("Remove Product: ");
 	systemTest.testRemoveProduct();
+	IO`println("Success");
+	
+	IO`print("Set Product Discount: ");
+	systemTest.testSetProductDiscount();
 	IO`println("Success");
 	
 	IO`print("Search Product By Name: ");
@@ -258,11 +311,12 @@ CustomerJoins: testCustomerJoins();
 MerchantJoins: testMerchantJoins();
 AddProduct: testAddProduct();
 RemoveProduct: testRemoveProduct();
+SetProductDiscount: testSetProductDiscount();
 SearchProductByName: testSearchProductByName();
 TransferBetweenCustomers: testTransferBetweenCustomers();
 InviteCustomerReceiveBonus: testInviteCustomer();
 InviteMerchantReceiveBonus: testInviteMerchant();
 BuyProductWithoutBalance: testBuyProductWithoutBalance();
-
+BuyProductUsingBalance: testBuyProductUsingBalance();
 
 end DiscountSystemTest
