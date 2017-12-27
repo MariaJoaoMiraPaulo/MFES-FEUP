@@ -6,6 +6,7 @@ import SmallBusinessDiscountSystem.logic.Merchant;
 import org.overture.codegen.runtime.SetUtil;
 import org.overture.codegen.runtime.VDMSet;
 
+import java.util.Iterator;
 import java.util.Scanner;
 
 
@@ -49,6 +50,7 @@ public class CommandLineInterface {
 				listMerchants();
 				break;
 			case 3:
+				listCustomers();
 				break;
 			case 4:
 				break;
@@ -64,11 +66,32 @@ public class CommandLineInterface {
 
 	}
 
+	public void listCustomers(){
+		System.out.println("---------------------------------------------");
+		System.out.println("                  Customers                  ");
+		System.out.println("---------------------------------------------");
+		VDMSet customers = system.GetCustomers();
+		int i = 1;
+
+		for (Iterator<Customer> iter = customers.iterator(); iter.hasNext(); ) {
+			Customer customer = iter.next();
+			System.out.println(i + ". " + customer.GetName());
+			i++;
+		}
+	}
+
 	public void listMerchants(){
 		System.out.println("---------------------------------------------");
 		System.out.println("                  Merchants                  ");
 		System.out.println("---------------------------------------------");
-		//VDMSet merchants = system.GetMerchants();
+		VDMSet merchants = system.GetMerchants();
+		int i = 1;
+
+		for (Iterator<Merchant> iter = merchants.iterator(); iter.hasNext(); ) {
+			Merchant merchant = iter.next();
+			System.out.println(i + ". " + merchant.GetName());
+			i++;
+		}
 	}
 
 	public void joinSystemMenu(){

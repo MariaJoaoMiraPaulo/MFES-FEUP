@@ -23,8 +23,7 @@ public class User {
   }
 
   public String GetName() {
-
-    throw new UnsupportedOperationException();
+    return name;
   }
 
   public User() {}
