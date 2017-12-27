@@ -4,12 +4,13 @@ types
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
-system : DiscountSystem := new DiscountSystem()
+
+system : DiscountSystem := new DiscountSystem();
+customer1 : Customer := new Customer("Rui");
+customer2 : Customer := new Customer("Joana");
+merchant1 : Merchant := new Merchant("zara")
 
 operations
--- TODO Define operations here
-
 
 private Assert : bool ==> ()
 Assert(cond) == return
@@ -19,13 +20,34 @@ private testCreateCustomer: () ==> ()
 testCreateCustomer() ==
 (
  dcl customer: Customer := new Customer("Rui");
- Assert(customer.GetName() = "Rui")
+ Assert(customer.GetName() = "Rui");
+ Assert(customer.GetBalance() = 0)
+);
+
+private testCreateMerchant: () ==> ()
+testCreateMerchant() ==
+(
+dcl merchant: Merchant := new Merchant("zara");
+Assert(merchant.GetName() = "zara");
+Assert(merchant.GetProducts() = {});
+Assert(merchant.GetBalance() = 0)
+);
+
+private testCustomerJoins: () ==> ()
+testCustomerJoins() ==
+(
+	Assert(system.customers = {})
+	--TODO
 );
 
 public static main: () ==> ()
 main()==
 (
-new DiscountSystemTest().testCreateCustomer();
+	dcl systemTest: DiscountSystemTest := new DiscountSystemTest();
+
+	systemTest.testCreateCustomer();
+	systemTest.testCreateMerchant();
+	systemTest.testCustomerJoins();
 )
 
 
@@ -33,6 +55,8 @@ functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-Test: testCreateCustomer();
+CreateCustomer: testCreateCustomer();
+CreateMerchant: testCreateMerchant();
+CustomerJoins: testCustomerJoins();
 
 end DiscountSystemTest

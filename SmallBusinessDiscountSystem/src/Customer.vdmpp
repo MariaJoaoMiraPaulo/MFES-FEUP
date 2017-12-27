@@ -1,6 +1,6 @@
 class Customer is subclass of User
 types
--- TODO Define types here
+
 values
 	public defaultDiscount: real = 3;
 	public defaultBonus: real = 5;
@@ -9,9 +9,8 @@ instance variables
  	private discountCard: DiscountCard := new DiscountCard(defaultDiscount);
  	
 operations
--- TODO Define operations here
 
---Initializes the custumer and creates a discount card
+--Customer constructor, initializes the custumer and creates a discount card
 public Customer : String ==> Customer
 Customer(String) == ( discountCard := new DiscountCard(0.10); User(String););
 
@@ -43,7 +42,6 @@ public increaseBalance(amount: real) ==
 	discountCard.increaseBalance(amount)
 
 functions
--- TODO Define functiones here
 traces
--- TODO Define Combinatorial Test Traces here
+
 end Customer

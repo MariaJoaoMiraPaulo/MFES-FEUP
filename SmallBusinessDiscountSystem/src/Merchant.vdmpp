@@ -1,40 +1,53 @@
 class Merchant is subclass of User
 types
 	public String = seq of char;
+	
 values
 	public SystemFee: real = 3;
+	
 instance variables
 	public products : set of Product := {};
 	private balance: real := 0;
 	
 operations
--- TODO Define operations here
+
+-- Merchant constructor
 public Merchant : String ==> Merchant
 Merchant(merchantName) == User(merchantName
 );
 
+-- Returns merchant's products
 public GetProducts() res: set of Product == return products;
 
+-- Returns merchant's balance
+public GetBalance() res: real == return balance;
+
+-- Merchant receives a bonus
 public receiveBonus() == ( balance:= balance + 5)
 post balance = balance~ + 5;
 
+-- Returns a product searched by name
 public getProductsByName(productName: String) products: set of Product ==
 return {product | product in set products & product.name = productName};
 
+-- Modify discounts on selected products
 public setDiscount(productName: String, discount: real) ==
 	for all product in set getProductsByName(productName) do
 		product.setDiscount(discount);		
 		
+-- Adds a product to merchant's products list
 public addProduct(product: Product) ==
 	products := products union {product}
 	pre product not in set products
 	post products = products~ union {product};
 	
+-- Removes a product from merchant's products list
 public removeProduct(product: Product) ==
 	products := products  \ {product}
 	pre product in set products
 	post products~ = products union {product} and product not in set products;
 	
+-- Sells a product
 public sellProduct(productName: String, customerDiscount: real, amount: nat) discount: real == 
 	for all product in set getProductsByName(productName) do (
 		balance := ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100) * (SystemFee/100)) * amount;
@@ -43,7 +56,7 @@ public sellProduct(productName: String, customerDiscount: real, amount: nat) dis
 	);
 	
 functions
--- TODO Define functiones here
+
 traces
--- TODO Define Combinatorial Test Traces here
+
 end Merchant

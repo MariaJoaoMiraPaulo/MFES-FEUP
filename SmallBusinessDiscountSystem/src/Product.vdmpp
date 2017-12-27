@@ -1,15 +1,18 @@
 class Product
+
 types
  public String = seq of char;
+ 
 values
--- TODO Define values here
+
 instance variables
 	public name : String;
 	public cost : real;
 	public quantity: nat;
 	public extraDiscount : real;
 operations
--- TODO Define operations here
+
+-- Product constructor
 public Product : String * real * nat * real ==> Product
 Product(product_name, product_cost, product_quantity, product_discount) ==
 (
@@ -20,23 +23,28 @@ Product(product_name, product_cost, product_quantity, product_discount) ==
 	return self;
 );
 
+-- Returns product name
 public getName() res: String == return name;
 
+-- Returns product price
 public getPrice() res: real == return cost;
 
+-- Returns product discount
 public getDiscount() res: real == return extraDiscount;
 
+-- Descreases product quantity
 public decreaseQuantity(amount: nat) ==
 	quantity := quantity - amount
 	pre quantity > 0
 	post quantity~ = quantity + amount;
 
+-- Modifies product disccount
 public setDiscount(discount: real) ==
 	extraDiscount := discount
 	post extraDiscount = discount;
 
 functions
--- TODO Define functiones here
+
 traces
--- TODO Define Combinatorial Test Traces here
+
 end Product
