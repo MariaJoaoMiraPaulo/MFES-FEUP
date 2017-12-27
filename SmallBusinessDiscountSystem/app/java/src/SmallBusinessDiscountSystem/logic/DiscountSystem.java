@@ -1,5 +1,6 @@
-package SmallBusinessDiscountSystem.gui;
+package SmallBusinessDiscountSystem.logic;
 
+import java.util.*;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
@@ -15,6 +16,16 @@ public class DiscountSystem {
   public DiscountSystem() {
 
     cg_init_DiscountSystem_1();
+  }
+
+  public VDMSet GetCustomers() {
+
+    return Utils.copy(customers);
+  }
+
+  public VDMSet GetMerchants() {
+
+    return Utils.copy(merchants);
   }
 
   public void customerJoins(final Customer customer) {

@@ -1,4 +1,4 @@
-package SmallBusinessDiscountSystem.gui.quotes;
+package SmallBusinessDiscountSystem.quotes;
 
 import org.overture.codegen.runtime.*;
 

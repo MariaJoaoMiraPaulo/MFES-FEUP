@@ -12,6 +12,12 @@ operations
 	public DiscountSystem: () ==> DiscountSystem
 	DiscountSystem() == return self;
 
+	public GetCustomers: () ==> set of Customer
+	GetCustomers() == return customers;
+	
+	public GetMerchants: () ==> set of Merchant
+	GetMerchants() == return merchants;
+
 	public customerJoins : Customer ==> ()
 	customerJoins(customer) == customers := customers union {customer}
 	pre customer not in set customers

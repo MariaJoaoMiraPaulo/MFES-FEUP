@@ -1,4 +1,4 @@
-package SmallBusinessDiscountSystem.gui;
+package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
 import org.overture.codegen.runtime.*;

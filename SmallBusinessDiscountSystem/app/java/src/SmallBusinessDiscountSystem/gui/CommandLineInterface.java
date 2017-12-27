@@ -1,8 +1,10 @@
-package SmallBusinessDiscountSystem.logic;
+package SmallBusinessDiscountSystem.gui;
 
-import SmallBusinessDiscountSystem.gui.Customer;
-import SmallBusinessDiscountSystem.gui.DiscountSystem;
-import SmallBusinessDiscountSystem.gui.Merchant;
+import SmallBusinessDiscountSystem.logic.Customer;
+import SmallBusinessDiscountSystem.logic.DiscountSystem;
+import SmallBusinessDiscountSystem.logic.Merchant;
+import org.overture.codegen.runtime.SetUtil;
+import org.overture.codegen.runtime.VDMSet;
 
 import java.util.Scanner;
 
@@ -26,10 +28,56 @@ public class CommandLineInterface {
 		System.out.println("---------------------------------------------");
 		System.out.println("            Welcome to Boobonus!");
 		System.out.println("---------------------------------------------");
-		System.out.println("What are you?");
+		System.out.println("1. Join System");
+		System.out.println("2. Merchants");
+		System.out.println("3. Customers");
+		System.out.println("4. Start to buy");
+		System.out.println("5. Merchant Settings");
+		System.out.println("6. Exit");
+		System.out.println("");
+
+
+		int option = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		switch (option){
+			case 1:
+				joinSystemMenu();
+				break;
+			case 2:
+				listMerchants();
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			case 6:
+				System.exit(1);
+				break;
+			default:
+				launchMainMenu();
+				break;
+		}
+
+	}
+
+	public void listMerchants(){
+		System.out.println("---------------------------------------------");
+		System.out.println("                  Merchants                  ");
+		System.out.println("---------------------------------------------");
+		//VDMSet merchants = system.GetMerchants();
+	}
+
+	public void joinSystemMenu(){
+		System.out.println("---------------------------------------------");
+		System.out.println("                 What are you?               ");
+		System.out.println("---------------------------------------------");
 		System.out.println("1. Merchant");
 		System.out.println("2. Costumer");
-		System.out.println("3. Exit");
+		System.out.println("3. Back");
 		System.out.println("");
 
 
@@ -45,7 +93,7 @@ public class CommandLineInterface {
 				launchCustomerMenu();
 				break;
 			case 3:
-				System.exit(1);
+				launchMainMenu();
 				break;
 			default:
 				launchMainMenu();
