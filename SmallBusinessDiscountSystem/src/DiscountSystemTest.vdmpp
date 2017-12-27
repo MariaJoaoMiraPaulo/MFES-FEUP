@@ -162,7 +162,39 @@ testInviteMerchant() ==
   
   -- Merchant1 Receives a bonus
   AssertEqual(balance + 5,merchant1.GetBalance());
- 
+);
+
+public testBuyProductWithoutBalance: () ==> ()
+testBuyProductWithoutBalance() == 
+(
+	dcl system: DiscountSystem := new DiscountSystem();	
+	dcl customerBalance: real := customer1.GetBalance();
+	dcl merchantBalance: real := merchant1.GetBalance();
+	dcl perfume : Product := new Product("perfume", 13.5, 10, 5);
+	dcl quantity: nat := perfume.getQuantity();
+	dcl amount: nat := 1;
+	dcl merchantReturn : real := ((perfume.getPrice() * (1-perfume.getDiscount()/100)) * (1-customer1.getDiscount()/100) * (merchant1.SystemFee/100)) * amount;
+	dcl customerReturn : real := (perfume.getPrice() - (perfume.getPrice() * (1-perfume.getDiscount()/100)) * (1-customer1.getDiscount()/100)) * amount;
+	
+	-- Prepare System
+	system.merchantJoins(merchant1);
+	system.customerJoins(customer1);
+	
+	-- Adding product
+	merchant1.addProduct(perfume);
+	
+	--Customer buys a product
+	system.buyProduct(merchant1, customer1, perfume, amount);
+	
+	-- Merchant sells product
+	AssertEqual(quantity-1, perfume.getQuantity());
+
+	-- Merchant balance increases
+	AssertEqual(merchantBalance + merchantReturn, merchant1.GetBalance());
+	
+	-- Customer balance increases
+	AssertEqual(customerBalance + customerReturn, customer1.GetBalance());
+
 );
 
 public static main: () ==> ()
@@ -209,6 +241,10 @@ main()==
 	IO`print("Merchant invites Merchant and receives a bonus: ");
 	systemTest.testInviteMerchant();
 	IO`println("Success");
+	
+	IO`print("Buy Product without discount balance: ");
+	systemTest.testBuyProductWithoutBalance();
+	IO`println("Success");
 )
 
 
@@ -226,6 +262,7 @@ SearchProductByName: testSearchProductByName();
 TransferBetweenCustomers: testTransferBetweenCustomers();
 InviteCustomerReceiveBonus: testInviteCustomer();
 InviteMerchantReceiveBonus: testInviteMerchant();
+BuyProductWithoutBalance: testBuyProductWithoutBalance();
 
 
 end DiscountSystemTest
