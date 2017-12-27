@@ -26,6 +26,8 @@ public getPrice() res: real == return cost;
 
 public getDiscount() res: real == return extraDiscount;
 
+public pure getQuantity() res: nat == return quantity;
+
 public decreaseQuantity(amount: nat) ==
 	quantity := quantity - amount
 	pre quantity > 0

@@ -6,7 +6,6 @@ values
 instance variables
 	private discount: real;
 	private balance: real := 0;
-	
 operations
 -- TODO Define operations here
 
@@ -24,6 +23,14 @@ public increaseBalance(amount: real) ==
 	balance := balance + amount
 	post balance = balance~ + amount;
 
+public decreaseBalance(amount: real) ==
+	if (balance - amount) > 0
+	then 
+	 	balance := balance - amount
+	else 
+		balance := 0
+	post balance = balance~ - amount;
+
 public withdraw(value: real) ==
 	balance := balance - value
 post balance = balance~ - value;
@@ -31,6 +38,7 @@ post balance = balance~ - value;
 public deposit(value: real) ==
 	balance := balance + value
 post balance = balance~ +value;
+
 
 functions
 -- TODO Define functiones here

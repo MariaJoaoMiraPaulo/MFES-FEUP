@@ -29,7 +29,10 @@ public GetBalance() res: real == return discountCard.GetBalance();
 public getDiscount() res: real == return discountCard.getDiscount();
 
 public increaseBalance(amount: real) == 
-	discountCard.increaseBalance(amount)
+	discountCard.increaseBalance(amount);
+	
+public decreaseBalance(amount: real) ==
+	discountCard.decreaseBalance(amount);
 
 functions
 -- TODO Define functiones here
