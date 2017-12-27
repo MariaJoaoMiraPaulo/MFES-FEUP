@@ -1,6 +1,5 @@
-package SmallBusinessDiscountSystem;
+package SmallBusinessDiscountSystem.gui;
 
-import java.util.*;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
