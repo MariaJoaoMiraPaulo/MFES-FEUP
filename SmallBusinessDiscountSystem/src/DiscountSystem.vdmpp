@@ -22,8 +22,18 @@ operations
 	pre merchant not in set merchants
 	post merchants = merchants~ union {merchant};
 				
-	public buyProduct(merchant: Merchant, customer: Customer, product: String, amount: nat) == 
-		customer.increaseBalance(merchant.sellProduct(product, customer.getDiscount(), amount));
+	public buyProduct(merchant: Merchant, customer: Customer, product: Product, amount: nat) == 
+		customer.increaseBalance(merchant.sellProduct(product, customer, amount))
+	pre product.getQuantity() >= amount;
+	
+	
+	public buyProductUsingBalance(merchant: Merchant, customer: Customer, product: Product, amount: nat) == 
+	(
+			customer.decreaseBalance(product.getPrice());
+			customer.increaseBalance(merchant.sellProduct(product, customer, amount));
+	)
+	pre product.getQuantity() >= amount;
+
 	
 	public transfer(sender, receiver: Customer, value: real) == (sender.withdraw(value);receiver.deposit(value);)
 	pre sender in set customers and receiver in set customers and value >=0

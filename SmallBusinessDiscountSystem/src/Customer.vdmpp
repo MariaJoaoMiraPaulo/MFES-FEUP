@@ -39,7 +39,10 @@ public receiveBonus() ==
 
 -- Customer receives a part of each purchase
 public increaseBalance(amount: real) == 
-	discountCard.increaseBalance(amount)
+	discountCard.increaseBalance(amount);
+	
+public decreaseBalance(amount: real) ==
+	discountCard.decreaseBalance(amount);
 
 functions
 traces

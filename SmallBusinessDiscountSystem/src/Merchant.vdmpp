@@ -47,14 +47,15 @@ public removeProduct(product: Product) ==
 	pre product in set products
 	post products~ = products union {product} and product not in set products;
 	
--- Sells a product
-public sellProduct(productName: String, customerDiscount: real, amount: nat) discount: real == 
-	for all product in set getProductsByName(productName) do (
-		balance := ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100) * (SystemFee/100)) * amount;
-		product.decreaseQuantity(amount);
-		return (product.getPrice() - (product.getPrice() * (1-product.getDiscount()/100)) * (1-customerDiscount/100)) * amount;
-	);
 	
+public sellProduct(product: Product, customer: Customer, amount: nat) discount: real == 
+	(
+		balance := ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customer.getDiscount()/100) * (SystemFee/100)) * amount;
+		product.decreaseQuantity(amount);
+		return (product.getPrice() - (product.getPrice() * (1-product.getDiscount()/100)) * (1-customer.getDiscount()/100)) * amount;
+	)
+	pre product.getQuantity() >= amount
+			
 functions
 
 traces
