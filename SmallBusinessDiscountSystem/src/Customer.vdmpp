@@ -3,31 +3,42 @@ types
 -- TODO Define types here
 values
 	public defaultDiscount: real = 3;
+	public defaultBonus: real = 5;
+	
 instance variables
  	private discountCard: DiscountCard := new DiscountCard(defaultDiscount);
+ 	
 operations
 -- TODO Define operations here
--- TODO Define operations here
+
+--Initializes the custumer and creates a discount card
 public Customer : String ==> Customer
 Customer(String) == ( discountCard := new DiscountCard(0.10); User(String););
 
+-- Returns customer discount card balance
+public GetBalance() res: real == return discountCard.GetBalance();
+
+-- Returns customer discount value
+public getDiscount() res: real == return discountCard.getDiscount();
+
+-- Returns customer discount card
 public GetCard() res: DiscountCard == return discountCard;
 
+-- Value is deposited on card 
 public deposit(value: real) ==
 	discountCard.deposit(value)
 pre value >= 0;
 
+-- Value is withdrawn from card
 public withdraw(value: real) ==
 	discountCard.withdraw(value)
 pre value >= 0;
 
+-- Customer receives a bonus
 public receiveBonus() == 
-	discountCard.deposit(5);
+	discountCard.deposit(defaultBonus);
 
-public GetBalance() res: real == return discountCard.GetBalance();
-
-public getDiscount() res: real == return discountCard.getDiscount();
-
+-- Customer receives a part of each purchase
 public increaseBalance(amount: real) == 
 	discountCard.increaseBalance(amount)
 
