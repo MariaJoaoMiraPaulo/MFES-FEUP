@@ -4,17 +4,28 @@ types
 values
 -- TODO Define values here
 instance variables
-
-system : DiscountSystem := new DiscountSystem();
 customer1 : Customer := new Customer("Rui");
 customer2 : Customer := new Customer("Joana");
-merchant1 : Merchant := new Merchant("zara")
+merchant1 : Merchant := new Merchant("zara");
+product: Product := new Product("botas",24.99, 5, 5)
 
 operations
 
 private Assert : bool ==> ()
 Assert(cond) == return
 pre cond;
+
+private AssertEqual: ? * ? ==> ()
+	AssertEqual(expected, actual) == 
+		if expected <> actual then (
+  			IO`print("Actual value (");
+  			IO`print(actual); 
+  			IO`print(") different from expected (");
+  			IO`print(expected);
+  			IO`println(")\n")
+		)
+	post expected = actual;
+
 
 private testCreateCustomer: () ==> ()
 testCreateCustomer() ==
@@ -36,8 +47,41 @@ Assert(merchant.GetBalance() = 0)
 private testCustomerJoins: () ==> ()
 testCustomerJoins() ==
 (
-	Assert(system.customers = {})
-	--TODO
+	dcl system: DiscountSystem := new DiscountSystem();
+	Assert(customer1 not in set system.customers);
+	system.customerJoins(customer1);
+	Assert(customer1 in set system.customers);
+);
+
+private testMerchantJoins: () ==> ()
+testMerchantJoins() ==
+(
+	dcl system: DiscountSystem := new DiscountSystem();	
+	Assert(merchant1 not in set system.merchants);
+	system.merchantJoins(merchant1);
+	Assert(merchant1 in set system.merchants);
+);
+
+private testAddProduct: () ==> ()
+testAddProduct() ==
+(
+	Assert(product not in set merchant1.GetProducts());
+	merchant1.addProduct(product);
+	Assert(product in set merchant1.GetProducts());
+	Assert(product.getName() = "botas");
+	Assert(product.getPrice() = 24.99 );
+	Assert(product.getQuantity() = 5);
+	Assert(product.getDiscount() = 5)
+);
+
+private testSearchProductByName: () ==> ()
+testSearchProductByName() ==
+(
+-- Clear System ? 
+	dcl merchant: Merchant:= new Merchant("new merchant");
+	AssertEqual({}, merchant.getProductsByName(product.getName()));
+	merchant.addProduct(product);
+	Assert(product in set merchant.getProductsByName(product.getName()))
 );
 
 public static main: () ==> ()
@@ -45,9 +89,29 @@ main()==
 (
 	dcl systemTest: DiscountSystemTest := new DiscountSystemTest();
 
+	IO`print("Create Customer: " );
 	systemTest.testCreateCustomer();
+	IO`println("Success");
+	
+	IO`print("Create Merchant: ");
 	systemTest.testCreateMerchant();
+	IO`println("Success");
+	
+	IO`print("Customer Joins: ");
 	systemTest.testCustomerJoins();
+	IO`println("Success");
+	
+	IO`print("Merchant Joins: ");
+	systemTest.testMerchantJoins();
+	IO`println("Success");
+	
+	IO`print("Add Product: ");
+	systemTest.testAddProduct();
+	IO`println("Success");
+	
+	IO`print("Search Product By Name: ");
+	systemTest.testSearchProductByName();
+	IO`println("Success");
 )
 
 
@@ -58,5 +122,9 @@ traces
 CreateCustomer: testCreateCustomer();
 CreateMerchant: testCreateMerchant();
 CustomerJoins: testCustomerJoins();
+MerchantJoins: testMerchantJoins();
+AddProduct: testAddProduct();
+SearchProductByName: testSearchProductByName();
+
 
 end DiscountSystemTest
