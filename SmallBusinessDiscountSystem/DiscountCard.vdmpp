@@ -29,7 +29,11 @@ public decreaseBalance(amount: real) ==
 	 	balance := balance - amount
 	else 
 		balance := 0
-	post balance = balance~ - amount;
+	post if (balance - amount) > 0
+	then 
+	 	balance = balance~ - amount
+	else 
+		balance = 0;
 
 public withdraw(value: real) ==
 	balance := balance - value
