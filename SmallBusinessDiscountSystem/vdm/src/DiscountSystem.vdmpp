@@ -22,26 +22,31 @@ operations
 	pre merchant not in set merchants
 	post merchants = merchants~ union {merchant};
 				
-	public buyProduct(merchant: Merchant, customer: Customer, product: Product, amount: nat) == 
+	public buyProduct : Merchant * Customer * Product * nat ==> () 
+	buyProduct(merchant, customer, product, amount) == 
 		customer.increaseBalance(merchant.sellProduct(product, customer, amount))
 	pre product.getQuantity() >= amount;
 	
-	public buyProductUsingBalance(merchant: Merchant, customer: Customer, product: Product, amount: nat) == 
+	public buyProductUsingBalance : Merchant * Customer * Product * nat ==> ()
+	buyProductUsingBalance(merchant, customer, product, amount) == 
 	(
 			customer.decreaseBalance(product.getPrice());
 			customer.increaseBalance(merchant.sellProduct(product, customer, amount));
 	)
 	pre product.getQuantity() >= amount;
 
-	public transfer(sender, receiver: Customer, value: real) == (sender.withdraw(value);receiver.deposit(value);)
+	public transfer : Customer * Customer * real ==> ()
+	transfer(sender, receiver, value) == (sender.withdraw(value);receiver.deposit(value);)
 	pre sender in set customers and receiver in set customers and value >=0
 	post sender in set customers and receiver in set customers;
 	
-	public inviteCustomer(user, invitee: Customer) == (customerJoins(invitee); user.receiveBonus())
+	public inviteCustomer : Customer * Customer ==> ()
+	inviteCustomer(user, invitee) == (customerJoins(invitee); user.receiveBonus())
 	pre user in set customers and invitee not in set customers
 	post user in set customers and invitee in set customers;
 	
-	public inviteMerchant(merchant, invitee: Merchant) == (merchantJoins(invitee); merchant.receiveBonus())
+	public inviteMerchant : Merchant * Merchant ==> ()
+	inviteMerchant(merchant, invitee) == (merchantJoins(invitee); merchant.receiveBonus())
 	pre merchant in set merchants and invitee not in set merchants
 	post merchant in set merchants and invitee in set merchants;
 	
