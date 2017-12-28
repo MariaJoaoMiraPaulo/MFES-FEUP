@@ -35,7 +35,8 @@ public class CommandLineInterface {
 		System.out.println("3. Customers");
 		System.out.println("4. Start to buy");
 		System.out.println("5. Merchant Settings");
-		System.out.println("6. Exit");
+		System.out.println("6. Transfer Between Customers");
+		System.out.println("7. Exit");
 		System.out.println("");
 
 
@@ -45,7 +46,7 @@ public class CommandLineInterface {
 
 		switch (option){
 			case 1:
-				joinSystemMenu();
+				joinSystem();
 				break;
 			case 2:
 				listMerchants();
@@ -56,8 +57,12 @@ public class CommandLineInterface {
 			case 4:
 				break;
 			case 5:
+				merchantSettings();
 				break;
 			case 6:
+				transfer();
+				break;
+			case 7:
 				System.exit(1);
 				break;
 			default:
@@ -67,20 +72,46 @@ public class CommandLineInterface {
 
 	}
 
-	public void listCustomers(){
-		System.out.println("---------------------------------------------");
-		System.out.println("                  Customers                  ");
-		System.out.println("---------------------------------------------");
+	public void merchantSettings(){
+
+	}
+
+	public void transfer(){
+		int i = printCustomers();
 		VDMSet customers = system.GetCustomers();
-		int i = 1;
 
-		for (Iterator<Customer> iter = customers.iterator(); iter.hasNext(); ) {
-			Customer customer = iter.next();
-			System.out.println(i + ". " + customer.GetName());
-			i++;
-		}
+		System.out.println("Who are you? (Type the number right before your name)");
+		int sender = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
 
+		System.out.println("Who is the receiver?");
+		int receiver = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		System.out.println("How much do you want to transfer?");
+		float amount = scanner.nextFloat();
+		// Skip the newline
+		scanner.nextLine();
+
+		System.out.println("Loading...");
+
+		Customer sender_user = (Customer) customers.toArray()[sender-1];
+		Customer receiver_user = (Customer) customers.toArray()[receiver-1];
+
+		system.transfer(sender_user,receiver_user,amount);
+
+		System.out.println("Transferation done with success...");
+
+		back();
+	}
+
+	public void listCustomers(){
+
+		int i = printCustomers();
 		int exit = i;
+
 		System.out.println(exit + ". Back");
 
 		int index = scanner.nextInt();
@@ -93,18 +124,9 @@ public class CommandLineInterface {
 	}
 
 	public void listMerchants(){
-		System.out.println("---------------------------------------------");
-		System.out.println("                  Merchants                  ");
-		System.out.println("---------------------------------------------");
-		VDMSet merchants = system.GetMerchants();
-		int i = 1;
 
-		for (Iterator<Merchant> iter = merchants.iterator(); iter.hasNext(); ) {
-			Merchant merchant = iter.next();
-			System.out.println(i + ". " + merchant.GetName());
-			i++;
+		int i = printMerchants();
 
-		}
 		int exit = i;
 		System.out.println(exit + ". Back");
 
@@ -137,15 +159,7 @@ public class CommandLineInterface {
 			System.out.println("-> " + product.getName());
 		}
 
-
-		System.out.println("1. Back");
-
-		int input = scanner.nextInt();
-		// Skip the newline
-		scanner.nextLine();
-
-		if(input == 1 )
-			launchMainMenu();
+		back();
 	}
 
 	public void openUserInfo(int index){
@@ -159,18 +173,11 @@ public class CommandLineInterface {
 		System.out.println("---------------------------------------------");
 		System.out.println("");
 
-		System.out.println("1. Back");
-
-		int input = scanner.nextInt();
-		// Skip the newline
-		scanner.nextLine();
-
-		if(input == 1 )
-			launchMainMenu();
+		back();
 	}
 
 
-	public void joinSystemMenu(){
+	public void joinSystem(){
 		System.out.println("---------------------------------------------");
 		System.out.println("                 What are you?               ");
 		System.out.println("---------------------------------------------");
@@ -229,6 +236,48 @@ public class CommandLineInterface {
 		scanner.nextLine();
 
 		launchMainMenu();
+	}
+
+	public void back(){
+		System.out.println("1. Back");
+
+		int input = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		if(input == 1 )
+			launchMainMenu();
+	}
+
+	public int printCustomers(){
+		System.out.println("---------------------------------------------");
+		System.out.println("                  Customers                  ");
+		System.out.println("---------------------------------------------");
+		VDMSet customers = system.GetCustomers();
+		int i = 1;
+
+		for (Iterator<Customer> iter = customers.iterator(); iter.hasNext(); ) {
+			Customer customer = iter.next();
+			System.out.println(i + ". " + customer.GetName());
+			i++;
+		}
+		return i;
+	}
+
+	public int printMerchants(){
+		System.out.println("---------------------------------------------");
+		System.out.println("                  Merchants                  ");
+		System.out.println("---------------------------------------------");
+		VDMSet merchants = system.GetMerchants();
+		int i = 1;
+
+		for (Iterator<Merchant> iter = merchants.iterator(); iter.hasNext(); ) {
+			Merchant merchant = iter.next();
+			System.out.println(i + ". " + merchant.GetName());
+			i++;
+
+		}
+		return i;
 	}
 
 }
