@@ -73,7 +73,93 @@ public class CommandLineInterface {
 	}
 
 	public void merchantSettings(){
+		printMerchants();
 
+		int merchant_index = scanner.nextInt();
+		scanner.nextLine();
+
+		VDMSet merchants = system.GetMerchants();
+		Merchant merchant = (Merchant) merchants.toArray()[merchant_index-1];
+
+		System.out.println("---------------------------------------------");
+		System.out.println("                  "+ merchant.GetName());
+		System.out.println(" Balance: "+ merchant.GetBalance());
+		System.out.println("---------------------------------------------");
+		System.out.println("");
+		System.out.println("1. Add Product");
+		System.out.println("2. Remove Product");
+		System.out.println("3. Modify Product Discount");
+		System.out.println("4. Back");
+
+		int option = scanner.nextInt();
+		scanner.nextLine();
+
+		switch (option) {
+			case 1:
+				addProduct(merchant);
+				break;
+			case 2:
+				removeProduct(merchant);
+				break;
+			case 3:
+				launchMainMenu();
+				break;
+			default:
+				launchMainMenu();
+				break;
+		}
+
+	}
+
+	public void addProduct(Merchant merchant){
+		System.out.println("---------------------------------------------");
+		System.out.println("                Add Product                  ");
+		System.out.println("---------------------------------------------");
+		System.out.println("");
+
+		System.out.println("What's the product name?");
+		String name = scanner.nextLine();
+
+		System.out.println("How much it costs?");
+		float cost = scanner.nextFloat();
+
+		System.out.println("What's the product discount?");
+		float discount = scanner.nextFloat();
+
+		System.out.println("What's the stock quantity?");
+		int quantity = scanner.nextInt();
+
+		Product product = new Product(name, cost, quantity, discount);
+		merchant.addProduct(product);
+
+		System.out.println("Added product with success!");
+
+		merchantSettings();
+	}
+
+	public void removeProduct(Merchant merchant){
+		System.out.println("---------------------------------------------");
+		System.out.println("              Remove Product                 ");
+		System.out.println("---------------------------------------------");
+		System.out.println("");
+
+		int i = printProducts(merchant);
+		int exit = i;
+
+		System.out.println(exit + ". Back");
+		System.out.println("Which product do you want to remove? (Type the number right before product name) ");
+
+		int index = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		if(index == exit )
+			launchMainMenu();
+		else {
+			merchant.removeProduct((Product) merchant.GetProducts().toArray()[index-1]);
+			System.out.println("Removed product with success!");
+			merchantSettings();
+		}
 	}
 
 	public void transfer(){
@@ -156,9 +242,10 @@ public class CommandLineInterface {
 		//List products
 		for (Iterator<Product> iter = products.iterator(); iter.hasNext(); ) {
 			Product product = iter.next();
-			System.out.println("-> " + product.getName());
+			System.out.println("-> " + product.getName() + ": " + product.getPrice() + "€ : discount: " + product.getDiscount() );
 		}
 
+		System.out.println("");
 		back();
 	}
 
@@ -277,6 +364,24 @@ public class CommandLineInterface {
 			i++;
 
 		}
+		return i;
+	}
+
+	public int printProducts(Merchant merchant){
+		System.out.println("---------------------------------------------");
+		System.out.println("                   Products                  ");
+		System.out.println("---------------------------------------------");
+		int i = 1;
+
+		VDMSet products = merchant.GetProducts();
+
+		//List products
+		for (Iterator<Product> iter = products.iterator(); iter.hasNext(); ) {
+			Product product = iter.next();
+			System.out.println(i + ": " + product.getName() + ": " + product.getPrice() + "€ : discount: " + product.getDiscount() );
+			i++;
+		}
+
 		return i;
 	}
 
