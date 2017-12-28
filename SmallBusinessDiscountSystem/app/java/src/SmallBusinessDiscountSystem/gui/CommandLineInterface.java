@@ -36,7 +36,8 @@ public class CommandLineInterface {
 		System.out.println("4. Start to buy");
 		System.out.println("5. Merchant Settings");
 		System.out.println("6. Transfer Between Customers");
-		System.out.println("7. Exit");
+		System.out.println("7. Invitations");
+		System.out.println("8. Exit");
 		System.out.println("");
 
 
@@ -63,6 +64,9 @@ public class CommandLineInterface {
 				transfer();
 				break;
 			case 7:
+				invitation();
+				break;
+			case 8:
 				System.exit(1);
 				break;
 			default:
@@ -217,12 +221,74 @@ public class CommandLineInterface {
 
 		System.out.println("Loading...");
 
-		Customer sender_user = (Customer) customers.toArray()[sender-1];
-		Customer receiver_user = (Customer) customers.toArray()[receiver-1];
+		Customer senderUser = (Customer) customers.toArray()[sender-1];
+		Customer receiverUser = (Customer) customers.toArray()[receiver-1];
 
-		system.transfer(sender_user,receiver_user,amount);
+		system.transfer(senderUser,receiverUser,amount);
 
 		System.out.println("Transferation done with success...");
+
+		back();
+	}
+
+	public void invitation(){
+		System.out.println("---------------------------------------------");
+		System.out.println("                 What are you?               ");
+		System.out.println("---------------------------------------------");
+		System.out.println("1. Merchant");
+		System.out.println("2. Costumer");
+		System.out.println("3. Back");
+		System.out.println("");
+
+
+		int option = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		switch (option) {
+			case 1:
+				inviteMerchant();
+				break;
+			case 2:
+				inviteCustomer();
+				break;
+			case 3:
+				launchMainMenu();
+				break;
+			default:
+				launchMainMenu();
+				break;
+		}
+	}
+
+	public void inviteMerchant(){
+
+	}
+
+	public void inviteCustomer(){
+		int i = printCustomers();
+		VDMSet customers = system.GetCustomers();
+
+		System.out.println("Who are you?");
+		int sender = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		System.out.println("What is the invitee name?");
+		String invitee = scanner.nextLine();
+
+		System.out.println("Loading... ") ;
+		System.out.println(invitee + " you should create your account now please:");
+
+		System.out.println("What is your name?");
+		String inviteeName = scanner.nextLine();
+
+		Customer newCustomer = new Customer(inviteeName);
+		Customer senderCustomer = (Customer) customers.toArray()[sender-1];
+
+		system.inviteCustomer(senderCustomer, newCustomer);
+
+		System.out.println("New Customer added to the system... Bonus deposited on " + senderCustomer.GetName() + "'s account") ;
 
 		back();
 	}
