@@ -48,6 +48,7 @@ public increaseBalance : real ==> ()
 increaseBalance(amount) == 
 	discountCard.increaseBalance(amount);
 	
+-- Deacreses customer balance
 public decreaseBalance : real ==> ()
 decreaseBalance(amount) ==
 	discountCard.decreaseBalance(amount);

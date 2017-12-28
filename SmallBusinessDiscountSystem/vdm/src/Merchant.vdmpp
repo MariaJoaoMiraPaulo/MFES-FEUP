@@ -55,6 +55,7 @@ removeProduct(product) ==
 	post products~ = products union {product} and product not in set products;
 	
 	
+-- Merchant sell a product, decreasing the product quantity and increasing his balance
 public sellProduct : Product * Customer * nat ==> real 
 sellProduct(product, customer, amount) == 
 	(

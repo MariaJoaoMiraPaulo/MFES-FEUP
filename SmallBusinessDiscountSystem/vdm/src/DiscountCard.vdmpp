@@ -29,6 +29,7 @@ increaseBalance(amount) ==
 	balance := balance + amount
 	post balance = balance~ + amount;
 
+-- Decreases balance from customer to a max minimum of 0
 public decreaseBalance : real ==> ()
 decreaseBalance(amount) ==
 	if (balance - amount) > 0

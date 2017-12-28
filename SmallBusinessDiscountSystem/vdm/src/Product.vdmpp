@@ -35,6 +35,7 @@ getPrice()  == return cost;
 public getDiscount : () ==> real
 getDiscount() == return extraDiscount;
 
+-- Returns the existing quantity for the product
 public pure getQuantity : () ==> nat
 getQuantity() == return quantity;
 

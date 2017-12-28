@@ -12,21 +12,25 @@ operations
 	public DiscountSystem: () ==> DiscountSystem
 	DiscountSystem() == return self;
 
+	-- Adds a customer to the system
 	public customerJoins : Customer ==> ()
 	customerJoins(customer) == customers := customers union {customer}
 	pre customer not in set customers
 	post customers = customers~ union {customer};
 	
+	-- Adds a merchant to the system
 	public merchantJoins : Merchant ==> ()
 	merchantJoins(merchant) == merchants := merchants union {merchant}
 	pre merchant not in set merchants
 	post merchants = merchants~ union {merchant};
 				
+	-- Customer buys a product from a merchant
 	public buyProduct : Merchant * Customer * Product * nat ==> () 
 	buyProduct(merchant, customer, product, amount) == 
 		customer.increaseBalance(merchant.sellProduct(product, customer, amount))
 	pre product.getQuantity() >= amount;
 	
+	-- Customer buys a product from a merchant using as much of is balance as possible
 	public buyProductUsingBalance : Merchant * Customer * Product * nat ==> ()
 	buyProductUsingBalance(merchant, customer, product, amount) == 
 	(
@@ -35,21 +39,26 @@ operations
 	)
 	pre product.getQuantity() >= amount;
 
+	-- Customer transfers an amount of is balance to another customer
 	public transfer : Customer * Customer * real ==> ()
 	transfer(sender, receiver, value) == (sender.withdraw(value);receiver.deposit(value);)
 	pre sender in set customers and receiver in set customers and value >=0
 	post sender in set customers and receiver in set customers;
 	
+	
+	-- Custumer invites another customer to the system and receives a bonus
 	public inviteCustomer : Customer * Customer ==> ()
 	inviteCustomer(user, invitee) == (customerJoins(invitee); user.receiveBonus())
 	pre user in set customers and invitee not in set customers
 	post user in set customers and invitee in set customers;
 	
+	-- Merchant invites another merchant to thte system and receives a bonus
 	public inviteMerchant : Merchant * Merchant ==> ()
 	inviteMerchant(merchant, invitee) == (merchantJoins(invitee); merchant.receiveBonus())
 	pre merchant in set merchants and invitee not in set merchants
 	post merchant in set merchants and invitee in set merchants;
-	
+			
+		
 functions
 -- TODO Define functiones here
 
