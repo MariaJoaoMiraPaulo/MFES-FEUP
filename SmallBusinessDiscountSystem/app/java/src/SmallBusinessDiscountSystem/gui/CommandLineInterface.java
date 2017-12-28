@@ -262,7 +262,31 @@ public class CommandLineInterface {
 	}
 
 	public void inviteMerchant(){
+		int i = printMerchants();
+		VDMSet merchants = system.GetMerchants();
 
+		System.out.println("Who are you?");
+		int sender = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		System.out.println("What is the invitee merchant name?");
+		String invitee = scanner.nextLine();
+
+		System.out.println("Loading... ") ;
+		System.out.println(invitee + " you should create your account now please:");
+
+		System.out.println("What is the name of your company?");
+		String inviteeName = scanner.nextLine();
+
+		Merchant newMerchant = new Merchant(inviteeName);
+		Merchant senderMerchant = (Merchant) merchants.toArray()[sender-1];
+
+		system.inviteMerchant(senderMerchant, newMerchant);
+
+		System.out.println("New Merchant added to the system... Bonus deposited on " + senderMerchant.GetName() + "'s account") ;
+
+		back();
 	}
 
 	public void inviteCustomer(){
