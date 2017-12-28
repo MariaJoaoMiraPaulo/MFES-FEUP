@@ -56,6 +56,8 @@ public class CommandLineInterface {
 				listCustomers();
 				break;
 			case 4:
+				Customer customer = chooseCustomer();
+				buy(customer);
 				break;
 			case 5:
 				merchantSettings();
@@ -76,6 +78,117 @@ public class CommandLineInterface {
 
 	}
 
+	public void buy(Customer customer){
+
+		System.out.println("---------------------------------------------");
+		System.out.println("                    Buy                      ");
+		System.out.println("---------------------------------------------");
+		System.out.println("1. By Store");
+		System.out.println("2. By name");
+		System.out.println("3. Back");
+		System.out.println("");
+
+		int option = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		switch (option) {
+			case 1:
+				findByStore(customer);
+				break;
+			case 2:
+				break;
+			case 3:
+				launchMainMenu();
+				break;
+			default:
+				launchMainMenu();
+				break;
+		}
+	}
+
+	public void findByStore(Customer customer){
+		int i = printMerchants();
+
+		//choose merchant
+		int option = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+		openMerchantInfo(option);
+		Merchant merchant = (Merchant) system.GetMerchants().toArray()[option-1];
+
+		//choose product
+		System.out.println("Choose product (Type the number right before product name)");
+		int productIndex = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+		Product product = (Product) merchant.GetProducts().toArray()[productIndex-1] ;
+
+
+		System.out.println("How many " + product.getName() + " do you want to buy?");
+		int quantity = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		checkout(merchant,customer,product,quantity);
+	}
+
+	public void openMerchantInfo(int index){
+		VDMSet merchants = system.GetMerchants();
+		Merchant merchant = (Merchant) merchants.toArray()[index-1];
+
+		System.out.println("---------------------------------------------");
+		System.out.println("                  "+ merchant.GetName());
+		System.out.println(" Balance: "+ merchant.GetBalance());
+		System.out.println("---------------------------------------------");
+		System.out.println("");
+		System.out.println(" Products:");
+
+		VDMSet products = merchant.GetProducts();
+		int i = 1;
+
+		//List products
+		for (Iterator<Product> iter = products.iterator(); iter.hasNext(); ) {
+			Product product = iter.next();
+			System.out.println(i+ ": " + product.getName() + ": " + product.getPrice() + "€ : discount: " + product.getDiscount() );
+			i++;
+		}
+
+		System.out.println("");
+		//back(i);
+	}
+
+	public void checkout(Merchant merchant, Customer customer, Product product, int amount){
+		System.out.println("---------------------------------------------");
+		System.out.println("                  Checkout                   ");
+		System.out.println("---------------------------------------------");
+		System.out.println("1. Use Card Balance: " + customer.GetBalance() + "€");
+		System.out.println("2. Without using Card Balance");
+		System.out.println("3. Back");
+		System.out.println("");
+
+		int option = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		switch (option) {
+			case 1:
+				system.buyProductUsingBalance(merchant, customer, product, amount);
+				launchMainMenu();
+				break;
+			case 2:
+				system.buyProduct(merchant, customer, product, amount);
+				launchMainMenu();
+				break;
+			case 3:
+				launchMainMenu();
+				break;
+			default:
+				launchMainMenu();
+				break;
+		}
+	}
+
 	public Merchant chooseMerchant(){
 		printMerchants();
 
@@ -85,6 +198,17 @@ public class CommandLineInterface {
 		VDMSet merchants = system.GetMerchants();
 		Merchant merchant = (Merchant) merchants.toArray()[merchant_index-1];
 		return merchant;
+	}
+
+	public Customer chooseCustomer(){
+		printCustomers();
+
+		int customer_index = scanner.nextInt();
+		scanner.nextLine();
+
+		VDMSet customers = system.GetCustomers();
+		Customer customer = (Customer) customers.toArray()[customer_index-1];
+		return customer;
 	}
 
 	public void merchantSettings(){
@@ -228,7 +352,7 @@ public class CommandLineInterface {
 
 		System.out.println("Transferation done with success...");
 
-		back();
+		back(1);
 	}
 
 	public void invitation(){
@@ -286,7 +410,7 @@ public class CommandLineInterface {
 
 		System.out.println("New Merchant added to the system... Bonus deposited on " + senderMerchant.GetName() + "'s account") ;
 
-		back();
+		back(1);
 	}
 
 	public void inviteCustomer(){
@@ -314,7 +438,7 @@ public class CommandLineInterface {
 
 		System.out.println("New Customer added to the system... Bonus deposited on " + senderCustomer.GetName() + "'s account") ;
 
-		back();
+		back(1);
 	}
 
 	public void listCustomers(){
@@ -350,29 +474,6 @@ public class CommandLineInterface {
 
 	}
 
-	public void openMerchantInfo(int index){
-		VDMSet merchants = system.GetMerchants();
-		Merchant merchant = (Merchant) merchants.toArray()[index-1];
-
-		System.out.println("---------------------------------------------");
-		System.out.println("                  "+ merchant.GetName());
-		System.out.println(" Balance: "+ merchant.GetBalance());
-		System.out.println("---------------------------------------------");
-		System.out.println("");
-		System.out.println(" Products:");
-
-		VDMSet products = merchant.GetProducts();
-
-		//List products
-		for (Iterator<Product> iter = products.iterator(); iter.hasNext(); ) {
-			Product product = iter.next();
-			System.out.println("-> " + product.getName() + ": " + product.getPrice() + "€ : discount: " + product.getDiscount() );
-		}
-
-		System.out.println("");
-		back();
-	}
-
 	public void openUserInfo(int index){
 		VDMSet customers = system.GetCustomers();
 		Customer customer = (Customer) customers.toArray()[index-1];
@@ -384,7 +485,7 @@ public class CommandLineInterface {
 		System.out.println("---------------------------------------------");
 		System.out.println("");
 
-		back();
+		back(1);
 	}
 
 
@@ -449,14 +550,14 @@ public class CommandLineInterface {
 		launchMainMenu();
 	}
 
-	public void back(){
-		System.out.println("1. Back");
+	public void back(int index){
+		System.out.println(index + ". Back");
 
 		int input = scanner.nextInt();
 		// Skip the newline
 		scanner.nextLine();
 
-		if(input == 1 )
+		if(input == index )
 			launchMainMenu();
 	}
 
