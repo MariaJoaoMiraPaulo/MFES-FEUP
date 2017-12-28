@@ -251,6 +251,36 @@ testBuyProductUsingBalance() ==
 
 );
 
+public testSearchMerchantByName: () ==> ()
+testSearchMerchantByName() == 
+(
+	dcl system: DiscountSystem := new DiscountSystem();	
+		
+	-- Prepare System
+	system.merchantJoins(merchant1);
+	
+	-- Search for merchant
+	for all merchant in set system.getMerchantsByName("zara") do
+		AssertEqual(merchant.GetName(), merchant1.GetName());
+
+);
+
+public testSearchCustomerByName: () ==> ()
+testSearchCustomerByName() == 
+(
+	dcl system: DiscountSystem := new DiscountSystem();	
+		
+	-- Prepare System
+	system.customerJoins(customer1);
+	system.customerJoins(customer2);
+	
+	-- Search for customer
+		for all customer in set system.getCustomerByName("Rui") do
+			AssertEqual(customer.GetName(), customer1.GetName());
+	
+	
+);
+
 public static main: () ==> ()
 main()==
 (
@@ -307,6 +337,14 @@ main()==
 	IO`print("Buy Product using current balance: ");
 	systemTest.testBuyProductUsingBalance();
 	IO`println("Success");
+	
+	IO`print("Search Merchant by name: ");
+	systemTest.testSearchMerchantByName();
+	IO`println("Success");
+	
+	IO`print("Search Customer by name: ");
+	systemTest.testSearchCustomerByName();
+	IO`println("Success");
 )
 
 
@@ -327,5 +365,7 @@ InviteCustomerReceiveBonus: testInviteCustomer();
 InviteMerchantReceiveBonus: testInviteMerchant();
 BuyProductWithoutBalance: testBuyProductWithoutBalance();
 BuyProductUsingBalance: testBuyProductUsingBalance();
+SearchMerchantByName: testSearchMerchantByName();
+SearchConsumerByName: testSearchCustomerByName();
 
 end DiscountSystemTest
