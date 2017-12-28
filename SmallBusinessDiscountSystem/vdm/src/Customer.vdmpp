@@ -15,33 +15,41 @@ public Customer : String ==> Customer
 Customer(String) == ( discountCard := new DiscountCard(0.10); User(String););
 
 -- Returns customer discount card balance
-public GetBalance() res: real == return discountCard.GetBalance();
+public GetBalance :  () ==> real
+GetBalance() == return discountCard.GetBalance();
 
 -- Returns customer discount value
-public getDiscount() res: real == return discountCard.getDiscount();
+public getDiscount : () ==> real 
+getDiscount() == return discountCard.getDiscount();
 
 -- Returns customer discount card
-public GetCard() res: DiscountCard == return discountCard;
+public GetCard : () ==> DiscountCard 
+GetCard() == return discountCard;
 
 -- Value is deposited on card 
-public deposit(value: real) ==
+public deposit: real ==> ()
+deposit(value) ==
 	discountCard.deposit(value)
 pre value >= 0;
 
 -- Value is withdrawn from card
-public withdraw(value: real) ==
+public withdraw : real ==> ()
+withdraw(value) ==
 	discountCard.withdraw(value)
 pre value >= 0;
 
 -- Customer receives a bonus
-public receiveBonus() == 
+public receiveBonus: () ==> ()
+receiveBonus() == 
 	discountCard.deposit(defaultBonus);
 
 -- Customer receives a part of each purchase
-public increaseBalance(amount: real) == 
+public increaseBalance : real ==> ()
+increaseBalance(amount) == 
 	discountCard.increaseBalance(amount);
 	
-public decreaseBalance(amount: real) ==
+public decreaseBalance : real ==> ()
+decreaseBalance(amount) ==
 	discountCard.decreaseBalance(amount);
 
 functions
