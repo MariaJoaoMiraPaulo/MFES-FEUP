@@ -20,13 +20,11 @@ public class DiscountCard {
   }
 
   public Number GetBalance() {
-
-    throw new UnsupportedOperationException();
+    return balance;
   }
 
   public Number getDiscount() {
-
-    throw new UnsupportedOperationException();
+    return discount;
   }
 
   public void increaseBalance(final Number amount) {

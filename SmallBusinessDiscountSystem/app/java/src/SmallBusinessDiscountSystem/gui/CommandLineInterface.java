@@ -3,6 +3,7 @@ package SmallBusinessDiscountSystem.gui;
 import SmallBusinessDiscountSystem.logic.Customer;
 import SmallBusinessDiscountSystem.logic.DiscountSystem;
 import SmallBusinessDiscountSystem.logic.Merchant;
+import SmallBusinessDiscountSystem.logic.Product;
 import org.overture.codegen.runtime.SetUtil;
 import org.overture.codegen.runtime.VDMSet;
 
@@ -78,6 +79,17 @@ public class CommandLineInterface {
 			System.out.println(i + ". " + customer.GetName());
 			i++;
 		}
+
+		int exit = i;
+		System.out.println(exit + ". Back");
+
+		int index = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		if(index == exit )
+			launchMainMenu();
+		else openUserInfo(index);
 	}
 
 	public void listMerchants(){
@@ -91,8 +103,72 @@ public class CommandLineInterface {
 			Merchant merchant = iter.next();
 			System.out.println(i + ". " + merchant.GetName());
 			i++;
+
 		}
+		int exit = i;
+		System.out.println(exit + ". Back");
+
+		int index = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		if(index != exit )
+			openMerchantInfo(index);
+		else launchMainMenu();
+
 	}
+
+	public void openMerchantInfo(int index){
+		VDMSet merchants = system.GetMerchants();
+		Merchant merchant = (Merchant) merchants.toArray()[index-1];
+
+		System.out.println("---------------------------------------------");
+		System.out.println("                  "+ merchant.GetName());
+		System.out.println(" Balance: "+ merchant.GetBalance());
+		System.out.println("---------------------------------------------");
+		System.out.println("");
+		System.out.println(" Products:");
+
+		VDMSet products = merchant.GetProducts();
+
+		//List products
+		for (Iterator<Product> iter = products.iterator(); iter.hasNext(); ) {
+			Product product = iter.next();
+			System.out.println("-> " + product.getName());
+		}
+
+
+		System.out.println("1. Back");
+
+		int input = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		if(input == 1 )
+			launchMainMenu();
+	}
+
+	public void openUserInfo(int index){
+		VDMSet customers = system.GetCustomers();
+		Customer customer = (Customer) customers.toArray()[index-1];
+
+		System.out.println("---------------------------------------------");
+		System.out.println("                  "+ customer.GetName());
+		System.out.println(" Card Balance: "+ customer.GetBalance());
+		System.out.println(" Card Discount: "+ customer.getDiscount());
+		System.out.println("---------------------------------------------");
+		System.out.println("");
+
+		System.out.println("1. Back");
+
+		int input = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		if(input == 1 )
+			launchMainMenu();
+	}
+
 
 	public void joinSystemMenu(){
 		System.out.println("---------------------------------------------");

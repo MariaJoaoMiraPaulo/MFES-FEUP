@@ -21,12 +21,12 @@ public class Merchant extends User {
 
   public VDMSet GetProducts() {
 
-    throw new UnsupportedOperationException();
+    return products;
   }
 
   public Number GetBalance() {
 
-    throw new UnsupportedOperationException();
+    return balance;
   }
 
   public void receiveBonus() {

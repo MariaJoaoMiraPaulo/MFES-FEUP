@@ -33,8 +33,7 @@ public class Product {
   }
 
   public String getName() {
-
-    throw new UnsupportedOperationException();
+    return name;
   }
 
   public Number getPrice() {

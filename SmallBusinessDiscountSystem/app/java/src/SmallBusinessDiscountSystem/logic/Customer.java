@@ -22,12 +22,12 @@ public class Customer extends User {
 
   public Number GetBalance() {
 
-    throw new UnsupportedOperationException();
+    return discountCard.GetBalance();
   }
 
   public Number getDiscount() {
 
-    throw new UnsupportedOperationException();
+    return discountCard.getDiscount();
   }
 
   public DiscountCard GetCard() {
