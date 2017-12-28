@@ -58,6 +58,15 @@ operations
 	pre merchant in set merchants and invitee not in set merchants
 	post merchant in set merchants and invitee in set merchants;
 			
+	-- Returns a list of merchants by name
+	public getMerchantsByName : String ==> set of Merchant 
+	getMerchantsByName(name) ==
+	return {merchant | merchant in set merchants & merchant.fullTextSearch(name)};
+
+	-- Returns a list of merchants by name
+	public getCustomerByName : String ==> set of Customer 
+	getCustomerByName(name) ==
+	return {customer | customer in set customers & customer.fullTextSearch(name)};
 		
 functions
 -- TODO Define functiones here
