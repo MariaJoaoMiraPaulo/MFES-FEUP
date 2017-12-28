@@ -238,11 +238,10 @@ testBuyProductUsingBalance() ==
 	-- Customer balance increases
 	AssertEqual(customerBalance + customerReturn, customer1.GetBalance());
 	
-	AssertEqual(customer1.GetBalance(), 47.5);
-	
 	system.buyProductUsingBalance(merchant1, customer1, perfume, amount);
 	
-	AssertEqual(customer1.GetBalance(), 0);
+	-- Customer uses 50.05€ balance to buy 100€ using 50.05€ from the balance and 49.95€ from cash, and receives new bonus, keeping the same balance	
+	AssertEqual(customerReturn, customer1.GetBalance());
 
 );
 
@@ -297,6 +296,10 @@ main()==
 	
 	IO`print("Buy Product without discount balance: ");
 	systemTest.testBuyProductWithoutBalance();
+	IO`println("Success");
+	
+	IO`print("Buy Product using current balance: ");
+	systemTest.testBuyProductUsingBalance();
 	IO`println("Success");
 )
 
