@@ -97,6 +97,7 @@ public class CommandLineInterface {
 				findByStore(customer);
 				break;
 			case 2:
+				findByName(customer);
 				break;
 			case 3:
 				launchMainMenu();
@@ -131,6 +132,10 @@ public class CommandLineInterface {
 		scanner.nextLine();
 
 		checkout(merchant,customer,product,quantity);
+	}
+
+	public void findByName(Customer customer){
+
 	}
 
 	public void openMerchantInfo(int index){
