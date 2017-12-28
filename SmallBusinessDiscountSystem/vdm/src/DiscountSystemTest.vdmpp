@@ -242,6 +242,12 @@ testBuyProductUsingBalance() ==
 	
 	-- Customer uses 50.05€ balance to buy 100€ using 50.05€ from the balance and 49.95€ from cash, and receives new bonus, keeping the same balance	
 	AssertEqual(customerReturn, customer1.GetBalance());
+	
+	system.buyProduct(merchant1, customer1, perfume, 5);
+	
+	system.buyProductUsingBalance(merchant1, customer1, perfume, amount);
+	
+	Assert(customer1.GetBalance() > customerReturn);
 
 );
 
