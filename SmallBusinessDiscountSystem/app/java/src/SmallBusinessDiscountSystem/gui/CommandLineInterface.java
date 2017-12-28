@@ -72,7 +72,7 @@ public class CommandLineInterface {
 
 	}
 
-	public void merchantSettings(){
+	public Merchant chooseMerchant(){
 		printMerchants();
 
 		int merchant_index = scanner.nextInt();
@@ -80,6 +80,12 @@ public class CommandLineInterface {
 
 		VDMSet merchants = system.GetMerchants();
 		Merchant merchant = (Merchant) merchants.toArray()[merchant_index-1];
+		return merchant;
+	}
+
+	public void merchantSettings(){
+
+		Merchant merchant = chooseMerchant();
 
 		System.out.println("---------------------------------------------");
 		System.out.println("                  "+ merchant.GetName());
@@ -102,7 +108,7 @@ public class CommandLineInterface {
 				removeProduct(merchant);
 				break;
 			case 3:
-				launchMainMenu();
+				changeDiscount(merchant);
 				break;
 			default:
 				launchMainMenu();
@@ -132,7 +138,7 @@ public class CommandLineInterface {
 		Product product = new Product(name, cost, quantity, discount);
 		merchant.addProduct(product);
 
-		System.out.println("Added product with success!");
+		System.out.println("Product added with success!");
 
 		merchantSettings();
 	}
@@ -146,7 +152,7 @@ public class CommandLineInterface {
 		int i = printProducts(merchant);
 		int exit = i;
 
-		System.out.println(exit + ". Back");
+		System.out.println(exit + ". Exit");
 		System.out.println("Which product do you want to remove? (Type the number right before product name) ");
 
 		int index = scanner.nextInt();
@@ -157,7 +163,35 @@ public class CommandLineInterface {
 			launchMainMenu();
 		else {
 			merchant.removeProduct((Product) merchant.GetProducts().toArray()[index-1]);
-			System.out.println("Removed product with success!");
+			System.out.println("Product removed with success!");
+			merchantSettings();
+		}
+	}
+
+	public void changeDiscount(Merchant merchant){
+		System.out.println("---------------------------------------------");
+		System.out.println("             Change Discount                 ");
+		System.out.println("---------------------------------------------");
+		System.out.println("");
+
+		int i = printProducts(merchant);
+		int exit = i;
+
+		System.out.println(exit + ". Exit");
+		System.out.println("For which product do you want to change discount? (Type the number right before product name) ");
+
+		int index = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
+
+		if(index == exit )
+			launchMainMenu();
+		else {
+			Product product = (Product) merchant.GetProducts().toArray()[index-1];
+			System.out.println("Type the new discount: ");
+			float newDiscount = scanner.nextFloat();
+			product.setDiscount(newDiscount);
+			System.out.println("Product modified with success!");
 			merchantSettings();
 		}
 	}
