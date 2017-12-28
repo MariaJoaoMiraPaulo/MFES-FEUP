@@ -20,31 +20,37 @@ public class DiscountCard {
   }
 
   public Number GetBalance() {
+
     return balance;
   }
 
   public Number getDiscount() {
+
     return discount;
   }
 
   public void increaseBalance(final Number amount) {
 
-    throw new UnsupportedOperationException();
+    balance = balance.doubleValue() + amount.doubleValue();
   }
 
   public void decreaseBalance(final Number amount) {
 
-    throw new UnsupportedOperationException();
+    if (balance.doubleValue() - amount.doubleValue() > 0L) {
+      balance = balance.doubleValue() - amount.doubleValue();
+    } else {
+      balance = 0L;
+    }
   }
 
   public void withdraw(final Number value) {
 
-    throw new UnsupportedOperationException();
+    balance = balance.doubleValue() - value.doubleValue();
   }
 
   public void deposit(final Number value) {
 
-    throw new UnsupportedOperationException();
+    balance = balance.doubleValue() + value.doubleValue();
   }
 
   public DiscountCard() {}

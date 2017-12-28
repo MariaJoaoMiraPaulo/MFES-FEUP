@@ -21,7 +21,8 @@ User(userName) == (
 );
 
 -- Returns user name
-public GetName() res: String == return name;
+public GetName : () ==> String
+GetName() == return name;
 
 functions
 traces

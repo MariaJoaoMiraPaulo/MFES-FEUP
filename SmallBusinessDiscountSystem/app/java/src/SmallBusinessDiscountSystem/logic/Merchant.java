@@ -1,6 +1,8 @@
 package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
+
+import SmallBusinessDiscountSystem.User;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
@@ -21,7 +23,7 @@ public class Merchant extends User {
 
   public VDMSet GetProducts() {
 
-    return products;
+    return Utils.copy(products);
   }
 
   public Number GetBalance() {
@@ -31,32 +33,55 @@ public class Merchant extends User {
 
   public void receiveBonus() {
 
-    throw new UnsupportedOperationException();
+    balance = balance.doubleValue() + 5L;
   }
 
   public VDMSet getProductsByName(final String productName) {
 
-    throw new UnsupportedOperationException();
+    VDMSet setCompResult_1 = SetUtil.set();
+    VDMSet set_1 = Utils.copy(products);
+    for (Iterator iterator_1 = set_1.iterator(); iterator_1.hasNext(); ) {
+      Product product = ((Product) iterator_1.next());
+      if (Utils.equals(product.name, productName)) {
+        setCompResult_1.add(product);
+      }
+    }
+    return Utils.copy(setCompResult_1);
   }
 
   public void setDiscount(final String productName, final Number discount) {
 
-    throw new UnsupportedOperationException();
+    for (Iterator iterator_2 = getProductsByName(productName).iterator(); iterator_2.hasNext(); ) {
+      Product product = (Product) iterator_2.next();
+      product.setDiscount(discount);
+    }
   }
 
   public void addProduct(final Product product) {
 
-    throw new UnsupportedOperationException();
+    products = SetUtil.union(Utils.copy(products), SetUtil.set(product));
   }
 
   public void removeProduct(final Product product) {
 
-    throw new UnsupportedOperationException();
+    products = SetUtil.diff(Utils.copy(products), SetUtil.set(product));
   }
 
   public Number sellProduct(final Product product, final Customer customer, final Number amount) {
 
-    throw new UnsupportedOperationException();
+    balance =
+        balance.doubleValue()
+            + product.getPrice().doubleValue()
+                * (1L - Utils.divide(product.getDiscount().doubleValue(), 100L))
+                * (1L - Utils.divide(customer.getDiscount().doubleValue(), 100L))
+                * Utils.divide(Merchant.SystemFee.doubleValue(), 100L)
+                * amount.longValue();
+    product.decreaseQuantity(amount);
+    return (product.getPrice().doubleValue()
+            - product.getPrice().doubleValue()
+                * (1L - Utils.divide(product.getDiscount().doubleValue(), 100L))
+                * (1L - Utils.divide(customer.getDiscount().doubleValue(), 100L)))
+        * amount.longValue();
   }
 
   public Merchant() {}

@@ -17,38 +17,47 @@ Merchant(merchantName) == User(merchantName
 );
 
 -- Returns merchant's products
-public GetProducts() res: set of Product == return products;
-
+public GetProducts: () ==> set of Product 
+GetProducts() == return products;
+	
 -- Returns merchant's balance
-public GetBalance() res: real == return balance;
+public GetBalance : () ==> real
+GetBalance() == return balance;
 
 -- Merchant receives a bonus
-public receiveBonus() == ( balance:= balance + 5)
+public receiveBonus: () ==> ()
+receiveBonus() == ( balance:= balance + 5)
 post balance = balance~ + 5;
 
 -- Returns a product searched by name
-public getProductsByName(productName: String) products: set of Product ==
+public getProductsByName : String ==> set of Product 
+getProductsByName(productName) ==
 return {product | product in set products & product.name = productName};
 
 -- Modify discounts on selected products
-public setDiscount(productName: String, discount: real) ==
+public setDiscount : String * real ==> ()
+setDiscount(productName, discount) ==
 	for all product in set getProductsByName(productName) do
 		product.setDiscount(discount);		
 		
 -- Adds a product to merchant's products list
-public addProduct(product: Product) ==
+public addProduct : Product ==> ()
+addProduct(product) ==
 	products := products union {product}
 	pre product not in set products
 	post products = products~ union {product};
 	
 -- Removes a product from merchant's products list
-public removeProduct(product: Product) ==
+public removeProduct : Product ==> ()
+removeProduct(product) ==
 	products := products  \ {product}
 	pre product in set products
 	post products~ = products union {product} and product not in set products;
 	
 	
-public sellProduct(product: Product, customer: Customer, amount: nat) discount: real == 
+-- Merchant sell a product, decreasing the product quantity and increasing his balance
+public sellProduct : Product * Customer * nat ==> real 
+sellProduct(product, customer, amount) == 
 	(
 		balance := balance + ((product.getPrice() * (1-product.getDiscount()/100)) * (1-customer.getDiscount()/100) * (SystemFee/100)) * amount;
 		product.decreaseQuantity(amount);

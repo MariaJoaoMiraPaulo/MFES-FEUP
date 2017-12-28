@@ -24,24 +24,31 @@ Product(product_name, product_cost, product_quantity, product_discount) ==
 );
 
 -- Returns product name
-public getName() res: String == return name;
+public getName : ()  ==> String
+getName() == return name;
 
 -- Returns product price
-public getPrice() res: real == return cost;
+public getPrice : () ==> real
+getPrice()  == return cost;
 
 -- Returns product discount
-public getDiscount() res: real == return extraDiscount;
+public getDiscount : () ==> real
+getDiscount() == return extraDiscount;
 
-public pure getQuantity() res: nat == return quantity;
+-- Returns the existing quantity for the product
+public pure getQuantity : () ==> nat
+getQuantity() == return quantity;
 
 -- Descreases product quantity
-public decreaseQuantity(amount: nat) ==
+public decreaseQuantity : nat ==> ()
+decreaseQuantity(amount) ==
 	quantity := quantity - amount
 	pre quantity > 0
 	post quantity~ = quantity + amount;
 
 -- Modifies product disccount
-public setDiscount(discount: real) ==
+public setDiscount : real ==> ()
+setDiscount(discount) ==
 	extraDiscount := discount
 	post extraDiscount = discount;
 

@@ -16,17 +16,22 @@ DiscountCard(cardDiscount) == (
 );
 
 -- Returns card balance
-public GetBalance() res: real == return balance;
+public GetBalance: () ==> real
+GetBalance() == return balance;
 
 -- Returns card discount
-public getDiscount() res: real == return discount;
+public getDiscount : () ==> real 
+getDiscount() == return discount;
 
 -- Inscreses card Balance
-public increaseBalance(amount: real) ==
+public increaseBalance : real ==> () 
+increaseBalance(amount) ==
 	balance := balance + amount
 	post balance = balance~ + amount;
 
-public decreaseBalance(amount: real) ==
+-- Decreases balance from customer to a max minimum of 0
+public decreaseBalance : real ==> ()
+decreaseBalance(amount) ==
 	if (balance - amount) > 0
 	then 
 	 	balance := balance - amount
@@ -39,12 +44,14 @@ public decreaseBalance(amount: real) ==
 		balance = 0;
 
 -- Withdraws from card
-public withdraw(value: real) ==
+public withdraw : real ==> ()
+withdraw(value) ==
 	balance := balance - value
 post balance = balance~ - value;
 	
 -- Deposits on card
-public deposit(value: real) ==
+public deposit : real ==> ()
+deposit(value) ==
 	balance := balance + value
 post balance = balance~ +value;
 

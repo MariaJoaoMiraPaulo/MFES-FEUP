@@ -78,6 +78,14 @@ public class DiscountSystemTest {
     Assert(!(SetUtil.inSet(product, merchant1.products)));
   }
 
+  private void testSetProductDiscount() {
+
+    Assert(Utils.equals(product.getDiscount(), 5L));
+    merchant1.addProduct(product);
+    merchant1.setDiscount(product.getName(), 10L);
+    Assert(Utils.equals(product.getDiscount(), 10L));
+  }
+
   private void testSearchProductByName() {
 
     Merchant merchant = new Merchant("new merchant");
@@ -157,6 +165,42 @@ public class DiscountSystemTest {
         customerBalance.doubleValue() + customerReturn.doubleValue(), customer1.GetBalance());
   }
 
+  public void testBuyProductUsingBalance() {
+
+    DiscountSystem system = new DiscountSystem();
+    Number customerBalance = customer1.GetBalance();
+    Number merchantBalance = merchant1.GetBalance();
+    Product perfume = new Product("perfume", 100L, 20L, 50L);
+    Number quantity = perfume.getQuantity();
+    Number amount = 1L;
+    Number merchantReturn =
+        perfume.getPrice().doubleValue()
+            * (1L - Utils.divide(perfume.getDiscount().doubleValue(), 100L))
+            * (1L - Utils.divide(customer1.getDiscount().doubleValue(), 100L))
+            * Utils.divide(merchant1.SystemFee.doubleValue(), 100L)
+            * amount.longValue();
+    Number customerReturn =
+        (perfume.getPrice().doubleValue()
+                - perfume.getPrice().doubleValue()
+                    * (1L - Utils.divide(perfume.getDiscount().doubleValue(), 100L))
+                    * (1L - Utils.divide(customer1.getDiscount().doubleValue(), 100L)))
+            * amount.longValue();
+    system.merchantJoins(merchant1);
+    system.customerJoins(customer1);
+    merchant1.addProduct(perfume);
+    system.buyProduct(merchant1, customer1, perfume, amount);
+    AssertEqual(quantity.longValue() - 1L, perfume.getQuantity());
+    AssertEqual(
+        merchantBalance.doubleValue() + merchantReturn.doubleValue(), merchant1.GetBalance());
+    AssertEqual(
+        customerBalance.doubleValue() + customerReturn.doubleValue(), customer1.GetBalance());
+    system.buyProductUsingBalance(merchant1, customer1, perfume, amount);
+    AssertEqual(customerReturn, customer1.GetBalance());
+    system.buyProduct(merchant1, customer1, perfume, 5L);
+    system.buyProductUsingBalance(merchant1, customer1, perfume, amount);
+    Assert(customer1.GetBalance().doubleValue() > customerReturn.doubleValue());
+  }
+
   public static void main() {
 
     DiscountSystemTest systemTest = new DiscountSystemTest();
@@ -178,6 +222,9 @@ public class DiscountSystemTest {
     IO.print("Remove Product: ");
     systemTest.testRemoveProduct();
     IO.println("Success");
+    IO.print("Set Product Discount: ");
+    systemTest.testSetProductDiscount();
+    IO.println("Success");
     IO.print("Search Product By Name: ");
     systemTest.testSearchProductByName();
     IO.println("Success");
@@ -192,6 +239,9 @@ public class DiscountSystemTest {
     IO.println("Success");
     IO.print("Buy Product without discount balance: ");
     systemTest.testBuyProductWithoutBalance();
+    IO.println("Success");
+    IO.print("Buy Product using current balance: ");
+    systemTest.testBuyProductUsingBalance();
     IO.println("Success");
   }
 

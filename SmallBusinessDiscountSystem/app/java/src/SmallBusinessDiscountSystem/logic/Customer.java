@@ -1,11 +1,14 @@
 package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
+
+import SmallBusinessDiscountSystem.logic.DiscountCard;
+import SmallBusinessDiscountSystem.User;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class Customer extends User {
-  public static final Number defaultDiscount = 3L;
+  public static final Number defaultDiscount = 5L;
   public static final Number defaultBonus = 5L;
   private DiscountCard discountCard = new DiscountCard(Customer.defaultDiscount);
 
@@ -32,32 +35,32 @@ public class Customer extends User {
 
   public DiscountCard GetCard() {
 
-    throw new UnsupportedOperationException();
+    return discountCard;
   }
 
   public void deposit(final Number value) {
 
-    throw new UnsupportedOperationException();
+    discountCard.deposit(value);
   }
 
   public void withdraw(final Number value) {
 
-    throw new UnsupportedOperationException();
+    discountCard.withdraw(value);
   }
 
   public void receiveBonus() {
 
-    throw new UnsupportedOperationException();
+    discountCard.deposit(Customer.defaultBonus);
   }
 
   public void increaseBalance(final Number amount) {
 
-    throw new UnsupportedOperationException();
+    discountCard.increaseBalance(amount);
   }
 
   public void decreaseBalance(final Number amount) {
 
-    throw new UnsupportedOperationException();
+    discountCard.decreaseBalance(amount);
   }
 
   public Customer() {}

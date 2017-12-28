@@ -1,4 +1,4 @@
-package SmallBusinessDiscountSystem.logic;
+package SmallBusinessDiscountSystem;
 
 import java.util.*;
 import org.overture.codegen.runtime.*;
@@ -23,6 +23,7 @@ public class User {
   }
 
   public String GetName() {
+
     return name;
   }
 
