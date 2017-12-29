@@ -84,8 +84,7 @@ public class CommandLineInterface {
 		System.out.println("                    Buy                      ");
 		System.out.println("---------------------------------------------");
 		System.out.println("1. By Store");
-		System.out.println("2. By name");
-		System.out.println("3. Back");
+		System.out.println("2. Back");
 		System.out.println("");
 
 		int option = scanner.nextInt();
@@ -97,9 +96,6 @@ public class CommandLineInterface {
 				findByStore(customer);
 				break;
 			case 2:
-				findByName(customer);
-				break;
-			case 3:
 				launchMainMenu();
 				break;
 			default:
@@ -110,14 +106,11 @@ public class CommandLineInterface {
 
 	public void findByStore(Customer customer){
 		int i = printMerchants();
-
-		//choose merchant
 		int option = scanner.nextInt();
-		// Skip the newline
-		scanner.nextLine();
-		openMerchantInfo(option);
-		Merchant merchant = (Merchant) system.GetMerchants().toArray()[option-1];
+		openMerchantProducts(option);
 
+		Merchant merchant = (Merchant) system.GetMerchants().toArray()[option-1];
+		System.out.println("");
 		//choose product
 		System.out.println("Choose product (Type the number right before product name)");
 		int productIndex = scanner.nextInt();
@@ -132,10 +125,6 @@ public class CommandLineInterface {
 		scanner.nextLine();
 
 		checkout(merchant,customer,product,quantity);
-	}
-
-	public void findByName(Customer customer){
-
 	}
 
 	public void openMerchantInfo(int index){
@@ -155,12 +144,34 @@ public class CommandLineInterface {
 		//List products
 		for (Iterator<Product> iter = products.iterator(); iter.hasNext(); ) {
 			Product product = iter.next();
-			System.out.println(i+ ": " + product.getName() + ": " + product.getPrice() + "€ : discount: " + product.getDiscount() );
+			System.out.println(i+ ": " + product.getName() + ": " + product.getPrice() + "€ : discount: " + product.getDiscount() + " stock: " + product.getQuantity());
 			i++;
 		}
 
 		System.out.println("");
-		//back(i);
+		back(i);
+	}
+
+	public void openMerchantProducts(int index){
+		VDMSet merchants = system.GetMerchants();
+		Merchant merchant = (Merchant) merchants.toArray()[index-1];
+
+		System.out.println("---------------------------------------------");
+		System.out.println("                  "+ merchant.GetName());
+		System.out.println(" Balance: "+ merchant.GetBalance());
+		System.out.println("---------------------------------------------");
+		System.out.println("");
+		System.out.println(" Products:");
+
+		VDMSet products = merchant.GetProducts();
+		int i = 1;
+
+		//List products
+		for (Iterator<Product> iter = products.iterator(); iter.hasNext(); ) {
+			Product product = iter.next();
+			System.out.println(i+ ": " + product.getName() + ": " + product.getPrice() + "€ : discount: " + product.getDiscount() + " stock: " + product.getQuantity());
+			i++;
+		}
 	}
 
 	public void checkout(Merchant merchant, Customer customer, Product product, int amount){
@@ -179,10 +190,12 @@ public class CommandLineInterface {
 		switch (option) {
 			case 1:
 				system.buyProductUsingBalance(merchant, customer, product, amount);
+				System.out.println("Purchased with success");
 				launchMainMenu();
 				break;
 			case 2:
 				system.buyProduct(merchant, customer, product, amount);
+				System.out.println("Purchased with success");
 				launchMainMenu();
 				break;
 			case 3:
