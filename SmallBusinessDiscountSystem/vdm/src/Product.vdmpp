@@ -43,7 +43,7 @@ getQuantity() == return quantity;
 public decreaseQuantity : nat ==> ()
 decreaseQuantity(amount) ==
 	quantity := quantity - amount
-	pre quantity > 0
+	pre (quantity - amount) >= 0
 	post quantity~ = quantity + amount;
 
 -- Modifies product disccount
