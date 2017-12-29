@@ -61,13 +61,12 @@ operations
 	-- Merchant invites another merchant to thte system and receives a bonus
 	public inviteMerchant : Merchant * Merchant ==> ()
 	inviteMerchant(merchant, invitee) == (merchantJoins(invitee); merchant.receiveBonus())
-	pre merchant.GetName() not in set dom merchants and invitee.GetName() not in set dom merchants
+	pre merchant.GetName() in set dom merchants and invitee.GetName() not in set dom merchants
 	post merchant.GetName() in set dom merchants and invitee.GetName() in set dom merchants;
 			
 	-- Returns a list of merchants by name
-	public pure getMerchantByName : seq1 of char ==> Merchant
-	getMerchantByName(name) ==
-	return merchants(name)
+	public getMerchantByName : String ==> Merchant
+	getMerchantByName(name) == return merchants(name)
 	pre name in set dom merchants;
 
 	-- Returns a list of merchants by name
