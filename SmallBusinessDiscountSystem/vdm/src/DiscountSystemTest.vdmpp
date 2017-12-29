@@ -57,9 +57,9 @@ private testMerchantJoins: () ==> ()
 testMerchantJoins() ==
 (
 	dcl system: DiscountSystem := new DiscountSystem();	
-	Assert(merchant1 not in set system.merchants);
+	Assert(merchant1.GetName() not in set dom system.merchants);
 	system.merchantJoins(merchant1);
-	Assert(merchant1 in set system.merchants);
+	Assert(merchant1.GetName() in set dom system.merchants);
 );
 
 private testAddProduct: () ==> ()
@@ -159,16 +159,16 @@ testInviteMerchant() ==
  
   -- Merchant1 is part of the system
  system.merchantJoins(merchant1);
- Assert(merchant1 in set system.merchants);
+ Assert(merchant1.GetName() in set dom system.merchants);
  
   -- Invitee is new on the system
- 	Assert(invitee not in set system.merchants);
+ 	Assert(invitee.GetName() not in set dom system.merchants);
  	
 	-- Merchant1 invites invitee
   system.inviteMerchant(merchant1, invitee); 
   
   -- Invitee becames a member of the system
-  Assert(invitee in set system.merchants);
+  Assert(invitee.GetName() in set dom system.merchants);
   
   -- Merchant1 Receives a bonus
   AssertEqual(balance + 5,merchant1.GetBalance());
