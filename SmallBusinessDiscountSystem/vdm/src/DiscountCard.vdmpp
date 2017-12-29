@@ -1,0 +1,65 @@
+class DiscountCard
+types
+
+values
+
+instance variables
+	private discount: real;
+	private balance: real := 0;
+	
+	inv balance >= 0;
+operations
+
+-- Discount Card constructor
+public DiscountCard: real ==> DiscountCard
+DiscountCard(cardDiscount) == (
+	discount := cardDiscount;
+	return self
+);
+
+-- Returns card balance
+public GetBalance: () ==> real
+GetBalance() == return balance;
+
+-- Returns card discount
+public getDiscount : () ==> real 
+getDiscount() == return discount;
+
+-- Inscreses card Balance
+public increaseBalance : real ==> () 
+increaseBalance(amount) ==
+	balance := balance + amount
+	post balance = balance~ + amount;
+
+-- Decreases balance from customer to a max minimum of 0
+public decreaseBalance : real ==> ()
+decreaseBalance(amount) ==
+	if (balance - amount) > 0
+	then 
+	 	balance := balance - amount
+	else 
+		balance := 0
+	post if (balance - amount) > 0
+	then 
+	 	balance = balance~ - amount
+	else 
+		balance = 0;
+
+-- Withdraws from card
+public withdraw : real ==> ()
+withdraw(value) ==
+	balance := balance - value
+post balance = balance~ - value;
+	
+-- Deposits on card
+public deposit : real ==> ()
+deposit(value) ==
+	balance := balance + value
+post balance = balance~ +value;
+
+
+functions
+
+traces
+
+end DiscountCard

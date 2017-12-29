@@ -1,0 +1,57 @@
+class User
+types
+	public String = seq of char;
+	
+values
+
+instance variables
+	private name : String;
+	public static userId : int := 0;
+	public id : int := userId;
+
+operations
+
+-- User Constructor 
+public User: String ==> User
+User(userName) == (
+				name := userName;
+				id := userId;
+				userId := userId + 1;
+				return self
+);
+
+-- Returns user name
+public pure GetName : () ==> String
+GetName() == return name;
+
+public fullTextSearch : seq of char ==> bool
+fullTextSearch(text) == (
+	dcl temp_text: seq of char := name;
+	dcl match: bool := false;
+	
+	while len temp_text >= len text and not match do(
+		match := true;
+		
+		for index = 1 to len text do
+			if match and text(index) <> temp_text(index) then (
+				match := false;
+			);
+		
+		if match then
+			return true
+		else (
+			temp_text := tl temp_text;
+			match := false;
+		);
+	
+	);
+	
+	return false;
+	
+)		
+pre len text > 0;
+
+functions
+traces
+
+end User

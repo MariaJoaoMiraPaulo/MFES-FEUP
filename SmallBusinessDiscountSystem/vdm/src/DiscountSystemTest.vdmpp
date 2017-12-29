@@ -1,0 +1,384 @@
+class DiscountSystemTest
+types
+-- TODO Define types here
+values
+-- TODO Define values here
+instance variables
+customer1 : Customer := new Customer("Rui");
+customer2 : Customer := new Customer("Joana");
+merchant1 : Merchant := new Merchant("zara");
+product: Product := new Product("botas",24.99, 5, 5)
+
+operations
+
+private Assert : bool ==> ()
+Assert(cond) == return
+pre cond;
+
+private AssertEqual: ? * ? ==> ()
+	AssertEqual(expected, actual) == 
+		if expected <> actual then (
+  			IO`print("Actual value (");
+  			IO`print(actual); 
+  			IO`print(") different from expected (");
+  			IO`print(expected);
+  			IO`println(")\n")
+		)
+	post expected = actual;
+
+
+private testCreateCustomer: () ==> ()
+testCreateCustomer() ==
+(
+ dcl customer: Customer := new Customer("Rui");
+ Assert(customer.GetName() = "Rui");
+ Assert(customer.GetBalance() = 0);
+ 
+ Assert(customer.GetCard().GetBalance() = 0);
+ 
+);
+
+private testCreateMerchant: () ==> ()
+testCreateMerchant() ==
+(
+dcl merchant: Merchant := new Merchant("zara");
+Assert(merchant.GetName() = "zara");
+Assert(merchant.GetProducts() = {});
+Assert(merchant.GetBalance() = 0);
+);
+
+private testCustomerJoins: () ==> ()
+testCustomerJoins() ==
+(
+	dcl customer : Customer := new Customer("Rui");
+	dcl system: DiscountSystem := new DiscountSystem();
+
+	Assert(customer not in set system.customers);
+	system.customerJoins(customer);
+	Assert(customer in set system.GetCustomers());
+);
+
+private testMerchantJoins: () ==> ()
+testMerchantJoins() ==
+(
+	dcl merchant : Merchant := new Merchant("zara");
+	dcl system: DiscountSystem := new DiscountSystem();	
+	Assert(merchant.GetName() not in set dom system.merchants);
+	system.merchantJoins(merchant);
+	Assert(merchant.GetName() in set dom system.GetMerchants());
+);
+
+private testAddProduct: () ==> ()
+testAddProduct() ==
+(
+	Assert(product not in set merchant1.GetProducts());
+	merchant1.addProduct(product);
+	Assert(product in set merchant1.GetProducts());
+	Assert(product.getName() = "botas");
+	Assert(product.getPrice() = 24.99 );
+	Assert(product.getQuantity() = 5);
+	Assert(product.getDiscount() = 5)
+);
+
+private testRemoveProduct: () ==> ()
+testRemoveProduct() == 
+(
+	if product not in set merchant1.products then
+		merchant1.addProduct(product);
+		
+	merchant1.removeProduct(product);
+	Assert( product not in set merchant1.products);
+);
+
+private testSetProductDiscount: () ==> ()
+testSetProductDiscount() == 
+(
+	Assert(product.getDiscount() = 5);
+	merchant1.addProduct(product);
+	merchant1.setDiscount(product.getName(), 10);
+	Assert(product.getDiscount() = 10);
+);
+
+
+private testSearchProductByName: () ==> ()
+testSearchProductByName() ==
+(
+	dcl merchant: Merchant:= new Merchant("new merchant");
+	AssertEqual({}, merchant.getProductsByName(product.getName()));
+	merchant.addProduct(product);
+	Assert(product in set merchant.getProductsByName(product.getName()))
+);
+
+private testTransferBetweenCustomers: () ==> ()
+testTransferBetweenCustomers() ==
+(
+	dcl customer : Customer := new Customer("Rui");
+	dcl system: DiscountSystem := new DiscountSystem();	
+	
+	system.customerJoins(customer);
+	system.customerJoins(customer2);
+	
+	--sender
+	AssertEqual(0,customer.GetBalance());
+	customer.deposit(10);
+	AssertEqual(10,customer.GetBalance());
+	
+	--receiver
+	AssertEqual(0, customer2.GetBalance());
+	
+	--transfer 10 from customer1 to customer2
+	system.transfer(customer, customer2, 10);
+	AssertEqual(0, customer.GetBalance());
+	AssertEqual(10, customer2.GetBalance());
+);
+
+private testInviteCustomer: () ==> ()
+testInviteCustomer() ==
+(
+ dcl invitee: Customer := new Customer("Invitee User");
+ dcl balance: real := customer1.GetBalance();
+ dcl system: DiscountSystem := new DiscountSystem();	
+ 
+ -- Customer 1 is part of the system
+ system.customerJoins(customer1);
+ Assert(customer1 in set system.customers);
+ 
+ -- Invitee is new on the system
+ 	Assert(invitee not in set system.customers);
+ 
+ -- Customer1 invites invitee
+  system.inviteCustomer(customer1, invitee); 
+ 
+ -- Invitee becames a member of the system
+  Assert(invitee in set system.customers);
+ 
+  -- Customer Receives a bonus
+  AssertEqual(balance + 5,customer1.GetBalance());
+  
+);
+
+private testInviteMerchant: () ==> ()
+testInviteMerchant() ==
+(
+ dcl merchant : Merchant := new Merchant("massimo");
+ dcl system: DiscountSystem := new DiscountSystem();	
+ dcl invitee: Merchant := new Merchant("Invitee Merchant");
+ dcl balance: real := merchant1.GetBalance();
+ 
+ 
+  -- Merchant1 is part of the system
+ system.merchantJoins(merchant);
+ Assert(merchant.GetName() in set dom system.merchants);
+ 
+  -- Invitee is new on the system
+ 	Assert(invitee.GetName() not in set dom system.merchants);
+ 	
+	-- Merchant1 invites invitee
+  system.inviteMerchant(merchant, invitee); 
+  
+  -- Invitee becames a member of the system
+  Assert(invitee.GetName() in set dom system.merchants);
+  
+  -- Merchant1 Receives a bonus
+  AssertEqual(balance + 5,merchant.GetBalance());
+);
+
+private testBuyProductWithoutBalance: () ==> ()
+testBuyProductWithoutBalance() == 
+(
+	dcl merchant : Merchant := new Merchant("zara");
+	dcl system: DiscountSystem := new DiscountSystem();	
+	dcl customerBalance: real := customer1.GetBalance();
+	dcl merchantBalance: real := merchant.GetBalance();
+	dcl perfume : Product := new Product("perfume", 13.5, 10, 5);
+	dcl quantity: nat := perfume.getQuantity();
+	dcl amount: nat := 1;
+	dcl merchantReturn : real := ((perfume.getPrice() * (1-perfume.getDiscount()/100)) * (1-customer1.getDiscount()/100) * (merchant.SystemFee/100)) * amount;
+	dcl customerReturn : real := (perfume.getPrice() - (perfume.getPrice() * (1-perfume.getDiscount()/100)) * (1-customer1.getDiscount()/100)) * amount;
+
+	
+	-- Prepare System
+	system.merchantJoins(merchant);
+	system.customerJoins(customer1);
+	
+	-- Adding product
+	merchant.addProduct(perfume);
+	
+	--Customer buys a product
+	system.buyProduct(merchant, customer1, perfume, amount);
+	
+	-- Merchant sells product
+	AssertEqual(quantity-1, perfume.getQuantity());
+
+	-- Merchant balance increases
+	AssertEqual(merchantBalance + merchantReturn, merchant.GetBalance());
+	
+	-- Customer balance increases
+	AssertEqual(customerBalance + customerReturn, customer1.GetBalance());
+
+);
+
+private testBuyProductUsingBalance: () ==> ()
+testBuyProductUsingBalance() == 
+(
+	dcl merchant : Merchant := new Merchant("zara");
+	dcl system: DiscountSystem := new DiscountSystem();	
+	dcl customerBalance: real := customer1.GetBalance();
+	dcl merchantBalance: real := merchant.GetBalance();
+	dcl perfume : Product := new Product("perfume", 100, 20, 50);
+	dcl quantity: nat := perfume.getQuantity();
+	dcl amount: nat := 1;
+	dcl merchantReturn : real := ((perfume.getPrice() * (1-perfume.getDiscount()/100)) * (1-customer1.getDiscount()/100) * (merchant.SystemFee/100)) * amount;
+	dcl customerReturn : real := (perfume.getPrice() - (perfume.getPrice() * (1-perfume.getDiscount()/100)) * (1-customer1.getDiscount()/100)) * amount;
+	
+	-- Prepare System
+	system.merchantJoins(merchant);
+	system.customerJoins(customer1);
+	
+	-- Adding product
+	merchant.addProduct(perfume);
+	
+	--Customer buys a product
+	system.buyProduct(merchant, customer1, perfume, amount);
+	
+	-- Merchant sells product
+	AssertEqual(quantity-1, perfume.getQuantity());
+
+	-- Merchant balance increases
+	AssertEqual(merchantBalance + merchantReturn, merchant.GetBalance());
+	
+	-- Customer balance increases
+	AssertEqual(customerBalance + customerReturn, customer1.GetBalance());
+	
+	system.buyProductUsingBalance(merchant, customer1, perfume, amount);
+	
+	-- Customer uses 50.05€ balance to buy 100€ using 50.05€ from the balance and 49.95€ from cash, and receives new bonus, keeping the same balance	
+	AssertEqual(customerReturn, customer1.GetBalance());
+	
+	system.buyProduct(merchant, customer1, perfume, 5);
+	
+	system.buyProductUsingBalance(merchant, customer1, perfume, amount);
+	
+	Assert(customer1.GetBalance() > customerReturn);
+
+);
+
+private testSearchMerchantByName: () ==> ()
+testSearchMerchantByName() == 
+(
+	dcl merchant : Merchant := new Merchant("zara");
+	dcl system: DiscountSystem := new DiscountSystem();	
+	
+	-- Prepare System
+	system.merchantJoins(merchant);
+	
+	-- Search for merchant
+	AssertEqual(system.getMerchantByName("zara").GetName(), merchant.GetName());
+
+);
+
+private testSearchCustomerByName: () ==> ()
+testSearchCustomerByName() == 
+(
+	dcl customer3 : Customer := new Customer("Rui");
+	dcl system: DiscountSystem := new DiscountSystem();	
+		
+	-- Prepare System
+	system.customerJoins(customer3);
+	system.customerJoins(customer2);
+	
+	-- Search for customer
+		for all customer in set system.getCustomerByName("Rui") do
+			AssertEqual(customer.GetName(), customer3.GetName());
+	
+	
+);
+
+public static main: () ==> ()
+main() ==
+(
+	dcl systemTest: DiscountSystemTest := new DiscountSystemTest();
+
+	IO`print("Create Customer: " );
+	systemTest.testCreateCustomer();
+	IO`println("Success");
+	
+	IO`print("Create Merchant: ");
+	systemTest.testCreateMerchant();
+	IO`println("Success");
+	
+	IO`print("Customer Joins: ");
+	systemTest.testCustomerJoins();
+	IO`println("Success");
+	
+	IO`print("Merchant Joins: ");
+	systemTest.testMerchantJoins();
+	IO`println("Success");
+	
+	IO`print("Add Product: ");
+	systemTest.testAddProduct();
+	IO`println("Success");
+	
+	IO`print("Remove Product: ");
+	systemTest.testRemoveProduct();
+	IO`println("Success");
+	
+	IO`print("Set Product Discount: ");
+	systemTest.testSetProductDiscount();
+	IO`println("Success");
+	
+	IO`print("Search Product By Name: ");
+	systemTest.testSearchProductByName();
+	IO`println("Success");
+	
+	IO`print("Transfer to Customer: ");
+	systemTest.testTransferBetweenCustomers();
+	IO`println("Success");
+	
+	IO`print("Customer invites Customer and receives a bonus: ");
+	systemTest.testInviteCustomer();
+	IO`println("Success");
+	
+	IO`print("Merchant invites Merchant and receives a bonus: ");
+	systemTest.testInviteMerchant();
+	IO`println("Success");
+	
+	IO`print("Buy Product without discount balance: ");
+	systemTest.testBuyProductWithoutBalance();
+	IO`println("Success");
+	
+	IO`print("Buy Product using current balance: ");
+	systemTest.testBuyProductUsingBalance();
+	IO`println("Success");
+	
+	IO`print("Search Merchant by name: ");
+	systemTest.testSearchMerchantByName();
+	IO`println("Success");
+	
+	IO`print("Search Customer by name: ");
+	systemTest.testSearchCustomerByName();
+	IO`println("Success");
+)
+
+
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+CreateCustomer: testCreateCustomer();
+CreateMerchant: testCreateMerchant();
+CustomerJoins: testCustomerJoins();
+MerchantJoins: testMerchantJoins();
+AddProduct: testAddProduct();
+RemoveProduct: testRemoveProduct();
+SetProductDiscount: testSetProductDiscount();
+SearchProductByName: testSearchProductByName();
+TransferBetweenCustomers: testTransferBetweenCustomers();
+InviteCustomerReceiveBonus: testInviteCustomer();
+InviteMerchantReceiveBonus: testInviteMerchant();
+BuyProductWithoutBalance: testBuyProductWithoutBalance();
+BuyProductUsingBalance: testBuyProductUsingBalance();
+SearchMerchantByName: testSearchMerchantByName();
+SearchConsumerByName: testSearchCustomerByName();
+
+end DiscountSystemTest
