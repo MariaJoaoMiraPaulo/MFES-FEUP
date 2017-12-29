@@ -1,9 +1,6 @@
 package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
-
-import SmallBusinessDiscountSystem.logic.DiscountCard;
-import SmallBusinessDiscountSystem.User;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")

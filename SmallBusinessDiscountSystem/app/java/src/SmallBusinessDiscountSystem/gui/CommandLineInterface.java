@@ -5,6 +5,7 @@ import SmallBusinessDiscountSystem.logic.DiscountSystem;
 import SmallBusinessDiscountSystem.logic.Merchant;
 import SmallBusinessDiscountSystem.logic.Product;
 import org.overture.codegen.runtime.SetUtil;
+import org.overture.codegen.runtime.VDMMap;
 import org.overture.codegen.runtime.VDMSet;
 
 import java.util.Iterator;
@@ -105,11 +106,12 @@ public class CommandLineInterface {
 	}
 
 	public void findByStore(Customer customer){
-		int i = printMerchants();
-		int option = scanner.nextInt();
-		openMerchantProducts(option);
+		printMerchants();
+		System.out.println("Enter store name ... ");
+		String name = scanner.nextLine();
+		openMerchantProducts(name);
 
-		Merchant merchant = (Merchant) system.GetMerchants().toArray()[option-1];
+		Merchant merchant = (Merchant) system.GetMerchants().get(name);
 		System.out.println("");
 		//choose product
 		System.out.println("Choose product (Type the number right before product name)");
@@ -127,9 +129,9 @@ public class CommandLineInterface {
 		checkout(merchant,customer,product,quantity);
 	}
 
-	public void openMerchantInfo(int index){
-		VDMSet merchants = system.GetMerchants();
-		Merchant merchant = (Merchant) merchants.toArray()[index-1];
+	public void openMerchantInfo(String merchantName){
+		VDMMap merchants = system.GetMerchants();
+		Merchant merchant = (Merchant) merchants.get(merchantName);
 
 		System.out.println("---------------------------------------------");
 		System.out.println("                  "+ merchant.GetName());
@@ -152,9 +154,9 @@ public class CommandLineInterface {
 		back(i);
 	}
 
-	public void openMerchantProducts(int index){
-		VDMSet merchants = system.GetMerchants();
-		Merchant merchant = (Merchant) merchants.toArray()[index-1];
+	public void openMerchantProducts(String merchantName){
+		VDMMap merchants = system.GetMerchants();
+		Merchant merchant = (Merchant) merchants.get(merchantName);
 
 		System.out.println("---------------------------------------------");
 		System.out.println("                  "+ merchant.GetName());
@@ -209,12 +211,9 @@ public class CommandLineInterface {
 
 	public Merchant chooseMerchant(){
 		printMerchants();
-
-		int merchant_index = scanner.nextInt();
-		scanner.nextLine();
-
-		VDMSet merchants = system.GetMerchants();
-		Merchant merchant = (Merchant) merchants.toArray()[merchant_index-1];
+		System.out.println("Enter store name...");
+		String merchant_name = scanner.nextLine();
+		Merchant merchant = (Merchant) system.GetMerchants().get(merchant_name);
 		return merchant;
 	}
 
@@ -224,8 +223,7 @@ public class CommandLineInterface {
 		int customer_index = scanner.nextInt();
 		scanner.nextLine();
 
-		VDMSet customers = system.GetCustomers();
-		Customer customer = (Customer) customers.toArray()[customer_index-1];
+		Customer customer = (Customer) system.GetCustomers().toArray()[customer_index-1];
 		return customer;
 	}
 
@@ -274,12 +272,18 @@ public class CommandLineInterface {
 
 		System.out.println("How much it costs?");
 		float cost = scanner.nextFloat();
+		// Skip the newline
+		scanner.nextLine();
 
 		System.out.println("What's the product discount?");
 		float discount = scanner.nextFloat();
+		// Skip the newline
+		scanner.nextLine();
 
 		System.out.println("What's the stock quantity?");
 		int quantity = scanner.nextInt();
+		// Skip the newline
+		scanner.nextLine();
 
 		Product product = new Product(name, cost, quantity, discount);
 		merchant.addProduct(product);
@@ -336,6 +340,8 @@ public class CommandLineInterface {
 			Product product = (Product) merchant.GetProducts().toArray()[index-1];
 			System.out.println("Type the new discount: ");
 			float newDiscount = scanner.nextFloat();
+			// Skip the newline
+			scanner.nextLine();
 			product.setDiscount(newDiscount);
 			System.out.println("Product modified with success!");
 			merchantSettings();
@@ -351,7 +357,7 @@ public class CommandLineInterface {
 		// Skip the newline
 		scanner.nextLine();
 
-		System.out.println("Who is the receiver?");
+		System.out.println("Who is the receiver? (Type the number right before receiver name)");
 		int receiver = scanner.nextInt();
 		// Skip the newline
 		scanner.nextLine();
@@ -404,13 +410,11 @@ public class CommandLineInterface {
 	}
 
 	public void inviteMerchant(){
-		int i = printMerchants();
-		VDMSet merchants = system.GetMerchants();
+		printMerchants();
+		VDMMap merchants = system.GetMerchants();
 
-		System.out.println("Who are you?");
-		int sender = scanner.nextInt();
-		// Skip the newline
-		scanner.nextLine();
+		System.out.println("Who are you? (Write your name)");
+		String sender = scanner.nextLine();
 
 		System.out.println("What is the invitee merchant name?");
 		String invitee = scanner.nextLine();
@@ -422,7 +426,7 @@ public class CommandLineInterface {
 		String inviteeName = scanner.nextLine();
 
 		Merchant newMerchant = new Merchant(inviteeName);
-		Merchant senderMerchant = (Merchant) merchants.toArray()[sender-1];
+		Merchant senderMerchant = (Merchant) merchants.get(sender);
 
 		system.inviteMerchant(senderMerchant, newMerchant);
 
@@ -435,7 +439,7 @@ public class CommandLineInterface {
 		int i = printCustomers();
 		VDMSet customers = system.GetCustomers();
 
-		System.out.println("Who are you?");
+		System.out.println("Who are you? (Type the number right before your name)");
 		int sender = scanner.nextInt();
 		// Skip the newline
 		scanner.nextLine();
@@ -477,18 +481,11 @@ public class CommandLineInterface {
 
 	public void listMerchants(){
 
-		int i = printMerchants();
+		printMerchants();
+		System.out.println("Enter store name...");
 
-		int exit = i;
-		System.out.println(exit + ". Back");
-
-		int index = scanner.nextInt();
-		// Skip the newline
-		scanner.nextLine();
-
-		if(index != exit )
-			openMerchantInfo(index);
-		else launchMainMenu();
+		String merchantName = scanner.nextLine();
+		openMerchantInfo(merchantName);
 
 	}
 
@@ -594,20 +591,12 @@ public class CommandLineInterface {
 		return i;
 	}
 
-	public int printMerchants(){
+	public void printMerchants(){
 		System.out.println("---------------------------------------------");
 		System.out.println("                  Merchants                  ");
 		System.out.println("---------------------------------------------");
-		VDMSet merchants = system.GetMerchants();
-		int i = 1;
-
-		for (Iterator<Merchant> iter = merchants.iterator(); iter.hasNext(); ) {
-			Merchant merchant = iter.next();
-			System.out.println(i + ". " + merchant.GetName());
-			i++;
-
-		}
-		return i;
+		VDMMap merchants = system.GetMerchants();
+		merchants.forEach((name, merchant) -> System.out.println(" -> "+ name));
 	}
 
 	public int printProducts(Merchant merchant){

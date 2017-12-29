@@ -1,15 +1,12 @@
 package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
-
-import SmallBusinessDiscountSystem.logic.Merchant;
-import SmallBusinessDiscountSystem.logic.Product;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class DiscountSystem {
   public VDMSet customers = SetUtil.set();
-  public VDMSet merchants = SetUtil.set();
+  public VDMMap merchants = MapUtil.map();
 
   public void cg_init_DiscountSystem_1() {
 
@@ -26,7 +23,7 @@ public class DiscountSystem {
     return Utils.copy(customers);
   }
 
-  public VDMSet GetMerchants() {
+  public VDMMap GetMerchants() {
 
     return Utils.copy(merchants);
   }
@@ -38,7 +35,9 @@ public class DiscountSystem {
 
   public void merchantJoins(final Merchant merchant) {
 
-    merchants = SetUtil.union(Utils.copy(merchants), SetUtil.set(merchant));
+    merchants =
+        MapUtil.munion(
+            Utils.copy(merchants), MapUtil.map(new Maplet(merchant.GetName(), merchant)));
   }
 
   public void buyProduct(
@@ -76,6 +75,24 @@ public class DiscountSystem {
 
     merchantJoins(invitee);
     merchant.receiveBonus();
+  }
+
+  public Merchant getMerchantByName(final String name) {
+
+    return ((Merchant) Utils.get(merchants, name));
+  }
+
+  public VDMSet getCustomerByName(final String name) {
+
+    VDMSet setCompResult_1 = SetUtil.set();
+    VDMSet set_1 = Utils.copy(customers);
+    for (Iterator iterator_1 = set_1.iterator(); iterator_1.hasNext(); ) {
+      Customer customer = ((Customer) iterator_1.next());
+      if (customer.fullTextSearch(name)) {
+        setCompResult_1.add(customer);
+      }
+    }
+    return Utils.copy(setCompResult_1);
   }
 
   public String toString() {

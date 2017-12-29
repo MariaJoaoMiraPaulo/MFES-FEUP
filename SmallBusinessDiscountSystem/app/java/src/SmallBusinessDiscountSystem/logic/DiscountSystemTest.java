@@ -52,9 +52,9 @@ public class DiscountSystemTest {
   private void testMerchantJoins() {
 
     DiscountSystem system = new DiscountSystem();
-    Assert(!(SetUtil.inSet(merchant1, system.merchants)));
+    Assert(!(SetUtil.inSet(merchant1.GetName(), MapUtil.dom(system.merchants))));
     system.merchantJoins(merchant1);
-    Assert(SetUtil.inSet(merchant1, system.merchants));
+    Assert(SetUtil.inSet(merchant1.GetName(), MapUtil.dom(system.merchants)));
   }
 
   private void testAddProduct() {
@@ -127,10 +127,10 @@ public class DiscountSystemTest {
     Merchant invitee = new Merchant("Invitee Merchant");
     Number balance = merchant1.GetBalance();
     system.merchantJoins(merchant1);
-    Assert(SetUtil.inSet(merchant1, system.merchants));
-    Assert(!(SetUtil.inSet(invitee, system.merchants)));
+    Assert(SetUtil.inSet(merchant1.GetName(), MapUtil.dom(system.merchants)));
+    Assert(!(SetUtil.inSet(invitee.GetName(), MapUtil.dom(system.merchants))));
     system.inviteMerchant(merchant1, invitee);
-    Assert(SetUtil.inSet(invitee, system.merchants));
+    Assert(SetUtil.inSet(invitee.GetName(), MapUtil.dom(system.merchants)));
     AssertEqual(balance.doubleValue() + 5L, merchant1.GetBalance());
   }
 
@@ -201,6 +201,24 @@ public class DiscountSystemTest {
     Assert(customer1.GetBalance().doubleValue() > customerReturn.doubleValue());
   }
 
+  public void testSearchMerchantByName() {
+
+    DiscountSystem system = new DiscountSystem();
+    system.merchantJoins(merchant1);
+    AssertEqual(system.getMerchantByName("zara").GetName(), merchant1.GetName());
+  }
+
+  public void testSearchCustomerByName() {
+
+    DiscountSystem system = new DiscountSystem();
+    system.customerJoins(customer1);
+    system.customerJoins(customer2);
+    for (Iterator iterator_3 = system.getCustomerByName("Rui").iterator(); iterator_3.hasNext(); ) {
+      Customer customer = (Customer) iterator_3.next();
+      AssertEqual(customer.GetName(), customer1.GetName());
+    }
+  }
+
   public static void main() {
 
     DiscountSystemTest systemTest = new DiscountSystemTest();
@@ -242,6 +260,12 @@ public class DiscountSystemTest {
     IO.println("Success");
     IO.print("Buy Product using current balance: ");
     systemTest.testBuyProductUsingBalance();
+    IO.println("Success");
+    IO.print("Search Merchant by name: ");
+    systemTest.testSearchMerchantByName();
+    IO.println("Success");
+    IO.print("Search Customer by name: ");
+    systemTest.testSearchCustomerByName();
     IO.println("Success");
   }
 

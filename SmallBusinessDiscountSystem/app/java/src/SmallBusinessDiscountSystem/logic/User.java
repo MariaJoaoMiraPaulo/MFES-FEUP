@@ -1,4 +1,4 @@
-package SmallBusinessDiscountSystem;
+package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
 import org.overture.codegen.runtime.*;
@@ -25,6 +25,57 @@ public class User {
   public String GetName() {
 
     return name;
+  }
+
+  public Boolean fullTextSearch(final String text) {
+
+    String temp_text = name;
+    Boolean match = false;
+    Boolean whileCond_1 = true;
+    while (whileCond_1) {
+      Boolean andResult_10 = false;
+
+      if (temp_text.length() >= text.length()) {
+        if (!(match)) {
+          andResult_10 = true;
+        }
+      }
+
+      whileCond_1 = andResult_10;
+
+      if (!(whileCond_1)) {
+        break;
+      }
+
+      {
+        match = true;
+        long toVar_1 = text.length();
+
+        for (Long index = 1L; index <= toVar_1; index++) {
+          Boolean andResult_11 = false;
+
+          if (match) {
+            if (!(Utils.equals(
+                text.charAt(Utils.index(index)), temp_text.charAt(Utils.index(index))))) {
+              andResult_11 = true;
+            }
+          }
+
+          if (andResult_11) {
+            match = false;
+          }
+        }
+        if (match) {
+          return true;
+
+        } else {
+          temp_text = SeqUtil.tail(temp_text);
+          match = false;
+        }
+      }
+    }
+
+    return false;
   }
 
   public User() {}

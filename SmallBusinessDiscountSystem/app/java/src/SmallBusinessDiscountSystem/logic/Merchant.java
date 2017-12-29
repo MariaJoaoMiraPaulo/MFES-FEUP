@@ -1,8 +1,6 @@
 package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
-
-import SmallBusinessDiscountSystem.User;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
@@ -38,21 +36,21 @@ public class Merchant extends User {
 
   public VDMSet getProductsByName(final String productName) {
 
-    VDMSet setCompResult_1 = SetUtil.set();
-    VDMSet set_1 = Utils.copy(products);
-    for (Iterator iterator_1 = set_1.iterator(); iterator_1.hasNext(); ) {
-      Product product = ((Product) iterator_1.next());
+    VDMSet setCompResult_2 = SetUtil.set();
+    VDMSet set_2 = Utils.copy(products);
+    for (Iterator iterator_2 = set_2.iterator(); iterator_2.hasNext(); ) {
+      Product product = ((Product) iterator_2.next());
       if (Utils.equals(product.name, productName)) {
-        setCompResult_1.add(product);
+        setCompResult_2.add(product);
       }
     }
-    return Utils.copy(setCompResult_1);
+    return Utils.copy(setCompResult_2);
   }
 
   public void setDiscount(final String productName, final Number discount) {
 
-    for (Iterator iterator_2 = getProductsByName(productName).iterator(); iterator_2.hasNext(); ) {
-      Product product = (Product) iterator_2.next();
+    for (Iterator iterator_4 = getProductsByName(productName).iterator(); iterator_4.hasNext(); ) {
+      Product product = (Product) iterator_4.next();
       product.setDiscount(discount);
     }
   }
