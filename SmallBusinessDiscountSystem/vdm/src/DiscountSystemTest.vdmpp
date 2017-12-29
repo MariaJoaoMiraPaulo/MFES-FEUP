@@ -260,8 +260,7 @@ testSearchMerchantByName() ==
 	system.merchantJoins(merchant1);
 	
 	-- Search for merchant
-	for all merchant in set system.getMerchantsByName("zara") do
-		AssertEqual(merchant.GetName(), merchant1.GetName());
+	AssertEqual(system.getMerchantByName("zara").GetName(), merchant1.GetName());
 
 );
 

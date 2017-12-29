@@ -65,9 +65,10 @@ operations
 	post merchant.GetName() in set dom merchants and invitee.GetName() in set dom merchants;
 			
 	-- Returns a list of merchants by name
-	public getMerchantsByName : String ==> set of Merchant 
-	getMerchantsByName(name) ==
-	return {merchant | merchant in set merchants & merchant.fullTextSearch(name)};
+	public pure getMerchantByName : seq1 of char ==> Merchant
+	getMerchantByName(name) ==
+	return merchants(name)
+	pre name in set dom merchants;
 
 	-- Returns a list of merchants by name
 	public getCustomerByName : String ==> set of Customer 
