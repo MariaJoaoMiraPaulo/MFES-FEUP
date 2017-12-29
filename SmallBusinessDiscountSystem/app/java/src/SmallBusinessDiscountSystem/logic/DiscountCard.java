@@ -1,4 +1,4 @@
-package SmallBusinessDiscountSystem.gui;
+package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
 import org.overture.codegen.runtime.*;
@@ -21,32 +21,36 @@ public class DiscountCard {
 
   public Number GetBalance() {
 
-    throw new UnsupportedOperationException();
+    return balance;
   }
 
   public Number getDiscount() {
 
-    throw new UnsupportedOperationException();
+    return discount;
   }
 
   public void increaseBalance(final Number amount) {
 
-    throw new UnsupportedOperationException();
+    balance = balance.doubleValue() + amount.doubleValue();
   }
 
   public void decreaseBalance(final Number amount) {
 
-    throw new UnsupportedOperationException();
+    if (balance.doubleValue() - amount.doubleValue() > 0L) {
+      balance = balance.doubleValue() - amount.doubleValue();
+    } else {
+      balance = 0L;
+    }
   }
 
   public void withdraw(final Number value) {
 
-    throw new UnsupportedOperationException();
+    balance = balance.doubleValue() - value.doubleValue();
   }
 
   public void deposit(final Number value) {
 
-    throw new UnsupportedOperationException();
+    balance = balance.doubleValue() + value.doubleValue();
   }
 
   public DiscountCard() {}

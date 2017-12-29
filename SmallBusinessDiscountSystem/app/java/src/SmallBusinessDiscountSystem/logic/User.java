@@ -1,5 +1,6 @@
-package SmallBusinessDiscountSystem.gui;
+package SmallBusinessDiscountSystem;
 
+import java.util.*;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
@@ -23,7 +24,7 @@ public class User {
 
   public String GetName() {
 
-    throw new UnsupportedOperationException();
+    return name;
   }
 
   public User() {}

@@ -63,7 +63,10 @@ sellProduct(product, customer, amount) ==
 		product.decreaseQuantity(amount);
 		return (product.getPrice() - (product.getPrice() * (1-product.getDiscount()/100)) * (1-customer.getDiscount()/100)) * amount;
 	)
-	pre product.getQuantity() >= amount
+	pre (
+		product.getQuantity() >= amount and
+		product in set products
+	);
 			
 functions
 

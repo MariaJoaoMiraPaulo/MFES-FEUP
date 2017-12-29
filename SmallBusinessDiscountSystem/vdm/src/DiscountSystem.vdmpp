@@ -5,12 +5,18 @@ values
 -- TODO Define values here
 instance variables
 	public customers: set of Customer := {};
-	public merchants: set of Merchant := {};
+	public merchants: map String to Merchant := {|->};
 	
 operations
 
 	public DiscountSystem: () ==> DiscountSystem
 	DiscountSystem() == return self;
+
+	public GetCustomers: () ==> set of Customer
+	GetCustomers() == return customers;
+	
+	public GetMerchants: () ==> map String to Merchant
+	GetMerchants() == return merchants;
 
 	-- Adds a customer to the system
 	public customerJoins : Customer ==> ()
@@ -20,9 +26,9 @@ operations
 	
 	-- Adds a merchant to the system
 	public merchantJoins : Merchant ==> ()
-	merchantJoins(merchant) == merchants := merchants union {merchant}
-	pre merchant not in set merchants
-	post merchants = merchants~ union {merchant};
+	merchantJoins(merchant) == merchants := merchants munion {merchant.GetName() |-> merchant}
+	pre merchant.GetName() not in set dom merchants
+	post merchants = merchants~ munion {merchant.GetName() |-> merchant};
 				
 	-- Customer buys a product from a merchant
 	public buyProduct : Merchant * Customer * Product * nat ==> () 
@@ -55,8 +61,8 @@ operations
 	-- Merchant invites another merchant to thte system and receives a bonus
 	public inviteMerchant : Merchant * Merchant ==> ()
 	inviteMerchant(merchant, invitee) == (merchantJoins(invitee); merchant.receiveBonus())
-	pre merchant in set merchants and invitee not in set merchants
-	post merchant in set merchants and invitee in set merchants;
+	pre merchant.GetName() not in set dom merchants and invitee.GetName() not in set dom merchants
+	post merchant.GetName() in set dom merchants and invitee.GetName() in set dom merchants;
 			
 	-- Returns a list of merchants by name
 	public getMerchantsByName : String ==> set of Merchant 

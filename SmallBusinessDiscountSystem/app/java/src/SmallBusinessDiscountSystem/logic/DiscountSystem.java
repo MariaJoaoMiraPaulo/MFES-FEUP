@@ -1,5 +1,9 @@
-package SmallBusinessDiscountSystem.gui;
+package SmallBusinessDiscountSystem.logic;
 
+import java.util.*;
+
+import SmallBusinessDiscountSystem.logic.Merchant;
+import SmallBusinessDiscountSystem.logic.Product;
 import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
@@ -15,6 +19,16 @@ public class DiscountSystem {
   public DiscountSystem() {
 
     cg_init_DiscountSystem_1();
+  }
+
+  public VDMSet GetCustomers() {
+
+    return Utils.copy(customers);
+  }
+
+  public VDMSet GetMerchants() {
+
+    return Utils.copy(merchants);
   }
 
   public void customerJoins(final Customer customer) {
@@ -33,7 +47,7 @@ public class DiscountSystem {
       final Product product,
       final Number amount) {
 
-    throw new UnsupportedOperationException();
+    customer.increaseBalance(merchant.sellProduct(product, customer, amount));
   }
 
   public void buyProductUsingBalance(
@@ -42,22 +56,26 @@ public class DiscountSystem {
       final Product product,
       final Number amount) {
 
-    throw new UnsupportedOperationException();
+    customer.decreaseBalance(product.getPrice());
+    customer.increaseBalance(merchant.sellProduct(product, customer, amount));
   }
 
   public void transfer(final Customer sender, final Customer receiver, final Number value) {
 
-    throw new UnsupportedOperationException();
+    sender.withdraw(value);
+    receiver.deposit(value);
   }
 
   public void inviteCustomer(final Customer user, final Customer invitee) {
 
-    throw new UnsupportedOperationException();
+    customerJoins(invitee);
+    user.receiveBonus();
   }
 
   public void inviteMerchant(final Merchant merchant, final Merchant invitee) {
 
-    throw new UnsupportedOperationException();
+    merchantJoins(invitee);
+    merchant.receiveBonus();
   }
 
   public String toString() {

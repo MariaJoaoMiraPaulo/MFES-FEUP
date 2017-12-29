@@ -1,4 +1,4 @@
-package SmallBusinessDiscountSystem.gui;
+package SmallBusinessDiscountSystem.logic;
 
 import java.util.*;
 import org.overture.codegen.runtime.*;
@@ -34,32 +34,32 @@ public class Product {
 
   public String getName() {
 
-    throw new UnsupportedOperationException();
+    return name;
   }
 
   public Number getPrice() {
 
-    throw new UnsupportedOperationException();
+    return cost;
   }
 
   public Number getDiscount() {
 
-    throw new UnsupportedOperationException();
+    return extraDiscount;
   }
 
   public Number getQuantity() {
 
-    throw new UnsupportedOperationException();
+    return quantity;
   }
 
   public void decreaseQuantity(final Number amount) {
 
-    throw new UnsupportedOperationException();
+    quantity = quantity.longValue() - amount.longValue();
   }
 
   public void setDiscount(final Number discount) {
 
-    throw new UnsupportedOperationException();
+    extraDiscount = discount;
   }
 
   public Product() {}
